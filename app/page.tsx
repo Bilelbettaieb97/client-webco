@@ -3,11 +3,8 @@ import { Navbar } from "@/components/layout/Navbar"
 import { Hero } from "@/components/sections/Hero"
 import { LogoBar } from "@/components/sections/LogoBar"
 import { Problem } from "@/components/sections/Problem"
-import { CROPlayground } from "@/components/sections/CROPlayground"
 import { Process } from "@/components/sections/Process"
 import { Results } from "@/components/sections/Results"
-import { ROISection } from "@/components/sections/ROISection"
-import { LiveABTest } from "@/components/sections/LiveABTest"
 import { Services } from "@/components/sections/Services"
 import { Portfolio } from "@/components/sections/Portfolio"
 import { Pricing } from "@/components/sections/Pricing"
@@ -18,7 +15,6 @@ import { CTAFinal } from "@/components/sections/CTAFinal"
 import { Contact } from "@/components/sections/Contact"
 import { Footer } from "@/components/layout/Footer"
 import { StickyCta } from "@/components/ui/StickyCta"
-import { ErrorBoundary } from "@/components/ui/ErrorBoundary"
 
 export const revalidate = 3600
 
@@ -29,21 +25,12 @@ export default async function HomePage() {
     <>
       <Navbar />
       <main id="main-content">
-        <ErrorBoundary>
-          <Hero data={data.hero} />
-        </ErrorBoundary>
+        <Hero data={data.hero} />
         <div className="section-divider" />
         <LogoBar />
         <Problem data={data.about} />
-        <ErrorBoundary>
-          <CROPlayground />
-        </ErrorBoundary>
         <Results data={data.results} />
         <div className="section-divider" />
-        <ROISection />
-        <ErrorBoundary>
-          <LiveABTest />
-        </ErrorBoundary>
         <Process data={data.process} />
         <Portfolio data={data.portfolio} />
         <Services data={data.services} />

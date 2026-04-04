@@ -1,24 +1,10 @@
 "use client"
 
-import dynamic from "next/dynamic"
-import { motion, useReducedMotion, useMotionValue, useSpring } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import { Star } from "lucide-react"
 import { AnimatedPaths } from "@/components/ui/AnimatedPaths"
-import { LivePageDemo } from "@/components/ui/LivePageDemo"
-import { TextReveal } from "@/components/ui/TextReveal"
-import { MagneticButton } from "@/components/ui/MagneticButton"
-import { ErrorBoundary } from "@/components/ui/ErrorBoundary"
-import { useRef, useEffect, useState, type MouseEvent as ReactMouseEvent } from "react"
+import { BrowserMockup } from "@/components/ui/BrowserMockup"
 import type { HeroContent } from "@/lib/types"
-
-const FluidBackground = dynamic(
-  () => import("@/components/ui/FluidBackground").then((m) => ({ default: m.FluidBackground })),
-  { ssr: false }
-)
-const ParticleText = dynamic(
-  () => import("@/components/ui/ParticleText").then((m) => ({ default: m.ParticleText })),
-  { ssr: false }
-)
 
 interface HeroProps {
   data: HeroContent
@@ -26,81 +12,35 @@ interface HeroProps {
 
 export function Hero({ data }: HeroProps) {
   const shouldReduce = useReducedMotion()
-  const sectionRef = useRef<HTMLElement>(null)
-  const [isTouchDevice, setIsTouchDevice] = useState(false)
-
-  const mouseX = useMotionValue(0.5)
-  const mouseY = useMotionValue(0.5)
-  const orbX = useSpring(mouseX, { stiffness: 50, damping: 30 })
-  const orbY = useSpring(mouseY, { stiffness: 50, damping: 30 })
-  const [orbStyle, setOrbStyle] = useState({ left: '50%', top: '50%' })
-
-  useEffect(() => {
-    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0)
-  }, [])
-
-  useEffect(() => {
-    if (isTouchDevice || shouldReduce) return
-    const unsubX = orbX.on("change", (x) => {
-      setOrbStyle(prev => ({ ...prev, left: `${x * 100}%` }))
-    })
-    const unsubY = orbY.on("change", (y) => {
-      setOrbStyle(prev => ({ ...prev, top: `${y * 100}%` }))
-    })
-    return () => { unsubX(); unsubY() }
-  }, [orbX, orbY, isTouchDevice, shouldReduce])
-
-  function handleMouseMove(e: ReactMouseEvent) {
-    if (!sectionRef.current || isTouchDevice || shouldReduce) return
-    const rect = sectionRef.current.getBoundingClientRect()
-    mouseX.set((e.clientX - rect.left) / rect.width)
-    mouseY.set((e.clientY - rect.top) / rect.height)
-  }
 
   const title = data.title || "Multipliez vos conversions B2B par 3 en 30 jours"
 
   return (
     <section
-      ref={sectionRef}
       id="hero"
       className="relative min-h-screen overflow-hidden bg-bg"
       aria-label="Accueil"
-      onMouseMove={handleMouseMove}
     >
-      {/* Static gradient background — always visible immediately */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 30% 50%, rgba(139,92,246,0.1) 0%, transparent 50%), radial-gradient(ellipse at 70% 30%, rgba(59,130,246,0.07) 0%, transparent 50%)" }} />
-
-      {/* WebGL Fluid Background — layered on top of static */}
-      <div className="absolute inset-0 z-0">
-        <ErrorBoundary>
-          <FluidBackground />
-        </ErrorBoundary>
-      </div>
+      {/* Static gradient background — always visible */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at 30% 50%, rgba(139,92,246,0.1) 0%, transparent 50%), radial-gradient(ellipse at 70% 30%, rgba(59,130,246,0.07) 0%, transparent 50%)",
+        }}
+      />
 
       {/* Animated Background Paths */}
       <div className="absolute inset-0 z-0">
         <AnimatedPaths />
       </div>
 
-      {/* Gradient orb following mouse */}
-      {!shouldReduce && !isTouchDevice && (
-        <div
-          className="absolute w-[600px] h-[600px] rounded-full pointer-events-none z-0 opacity-20 blur-[120px]"
-          style={{
-            background: 'radial-gradient(circle, rgba(139,92,246,0.4) 0%, rgba(59,130,246,0.2) 50%, transparent 70%)',
-            left: orbStyle.left,
-            top: orbStyle.top,
-            transform: 'translate(-50%, -50%)',
-          }}
-        />
-      )}
-
-      {/* Content */}
+      {/* Content — NO framer-motion initial:opacity:0, everything visible immediately */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40">
         <div className="text-center max-w-4xl mx-auto">
-          {/* Badge — scarcity + urgency — visible immediately */}
+          {/* Badge */}
           <motion.div
-            initial={{ opacity: 0, y: shouldReduce ? 0 : 10 }}
+            initial={shouldReduce ? {} : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
@@ -110,94 +50,98 @@ export function Hero({ data }: HeroProps) {
             </span>
           </motion.div>
 
-          {/* Particle morphing multiplier */}
-          <motion.div
-            className="mt-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <ErrorBoundary fallback={
-              <div className="flex items-center justify-center mx-auto">
-                <span className="text-6xl sm:text-7xl md:text-8xl font-mono font-black text-gradient leading-none select-none">x3.2</span>
-              </div>
-            }>
-              <ParticleText text="x3.2" className="mx-auto" />
-            </ErrorBoundary>
-          </motion.div>
+          {/* Big multiplier — static, always visible */}
+          <div className="mt-6">
+            <span className="text-6xl sm:text-7xl md:text-8xl font-mono font-black text-gradient leading-none select-none">
+              x3.2
+            </span>
+          </div>
 
-          {/* Title -- cinematic text reveal */}
-          <h1 className="mt-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.1] tracking-tight">
-            <TextReveal text={title} className="text-gradient" />
+          {/* Title */}
+          <h1 className="mt-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.1] tracking-tight text-gradient">
+            {title}
           </h1>
 
           {/* Subtitle */}
-          <motion.p
-            className="mt-6 text-base sm:text-lg md:text-xl text-text-muted max-w-2xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: shouldReduce ? 0 : 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-          >
+          <p className="mt-6 text-base sm:text-lg md:text-xl text-text-muted max-w-2xl mx-auto leading-relaxed">
             {data.subtitle ||
-              "Nos landing pages generent en moyenne x3.2 de conversions pour les entreprises B2B. Design strategique, copywriting data-driven, A/B testing inclus."}
-          </motion.p>
+              "Nos landing pages génèrent en moyenne x3.2 de conversions pour les entreprises B2B. Design stratégique, copywriting data-driven, A/B testing inclus."}
+          </p>
 
           {/* CTAs */}
-          <motion.div
-            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
-            initial={{ opacity: 0, y: shouldReduce ? 0 : 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.4 }}
-          >
-            <MagneticButton
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
               href="#contact"
               className="group relative px-8 py-3.5 text-sm font-semibold rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 cursor-pointer min-h-[44px] flex items-center"
             >
-              <span className="relative z-10">{data.cta_primary || "Obtenir mon audit CRO gratuit"}</span>
+              <span className="relative z-10">
+                {data.cta_primary || "Obtenir mon audit CRO gratuit"}
+              </span>
               <div className="absolute inset-0 bg-gradient-to-r from-accent-blue to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </MagneticButton>
+            </a>
             <a
               href="#resultats"
               className="px-8 py-3.5 text-sm font-semibold rounded-lg border border-zinc-700 text-text hover:border-accent/50 hover:bg-accent/5 transition-all duration-300 cursor-pointer min-h-[44px] flex items-center"
             >
-              {data.cta_secondary || "Voir les resultats clients →"}
+              {data.cta_secondary || "Voir les résultats clients →"}
             </a>
-          </motion.div>
+          </div>
 
           {/* Micro-proof */}
-          <motion.div
-            className="mt-8 flex flex-col items-center gap-2"
-            initial={{ opacity: 0, y: shouldReduce ? 0 : 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.5 }}
-          >
-            <div className="flex items-center gap-1.5">
+          <div className="mt-8 flex flex-col items-center gap-2">
+            <div className="flex items-center gap-1.5 flex-wrap justify-center">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
+                <Star
+                  key={i}
+                  size={16}
+                  className="fill-yellow-400 text-yellow-400"
+                />
               ))}
-              <span className="ml-2 text-sm font-medium text-text stat-number">4.9/5</span>
-              <span className="text-sm text-text-muted">— Note par +50 directeurs marketing B2B</span>
+              <span className="ml-2 text-sm font-medium text-text stat-number">
+                4.9/5
+              </span>
+              <span className="text-sm text-text-muted">
+                — Noté par +50 directeurs marketing B2B
+              </span>
             </div>
             <p className="text-xs text-text-muted/70">
-              Deja adopte par DataFlow, PaySecure, CloudOps et <span className="stat-number">200+</span> entreprises B2B
+              Déjà adopté par DataFlow, PaySecure, CloudOps et{" "}
+              <span className="stat-number">200+</span> entreprises B2B
             </p>
-          </motion.div>
+          </div>
         </div>
 
-        {/* LivePageDemo — Animated landing page being built in real-time */}
-        <motion.div
-          className="mt-16 sm:mt-20"
-          initial={{ opacity: 0, y: shouldReduce ? 0 : 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-        >
-          <ErrorBoundary>
-            <LivePageDemo />
-          </ErrorBoundary>
-        </motion.div>
+        {/* Browser mockup with fake landing page */}
+        <div className="mt-16 sm:mt-20 max-w-4xl mx-auto">
+          <BrowserMockup url="votre-landing-page.com">
+            <div className="p-6 sm:p-8 min-h-[300px] bg-[#09090b] relative overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.06)_0%,transparent_60%)]" />
+              <div className="relative z-10 space-y-4">
+                <div className="h-2.5 w-24 bg-zinc-800 rounded" />
+                <div className="h-7 w-3/4 bg-gradient-to-r from-accent/40 to-accent-blue/40 rounded" />
+                <div className="h-7 w-1/2 bg-gradient-to-r from-accent/30 to-accent-blue/30 rounded" />
+                <div className="h-3 w-full bg-zinc-800/60 rounded mt-4" />
+                <div className="h-3 w-5/6 bg-zinc-800/40 rounded" />
+                <div className="flex items-center gap-2 mt-4">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="w-3 h-3 rounded-full bg-yellow-400/50" />
+                  ))}
+                  <span className="text-[10px] text-zinc-500">200+ clients</span>
+                </div>
+                <div className="mt-4 h-10 w-48 bg-gradient-to-r from-accent to-accent-blue rounded-lg" />
+                <div className="flex items-center gap-2 mt-3">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] text-green-400 bg-green-400/10 border border-green-400/20 rounded-full">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                    Taux de conversion: 7.8%
+                  </span>
+                </div>
+              </div>
+            </div>
+          </BrowserMockup>
+        </div>
       </div>
 
-      {/* Animated gradient line divider at bottom */}
+      {/* Gradient line at bottom */}
       <div className="absolute bottom-0 left-0 right-0 z-10">
         <div className="animated-gradient-line w-full" />
       </div>

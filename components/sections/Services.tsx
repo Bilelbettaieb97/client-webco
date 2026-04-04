@@ -5,7 +5,6 @@ import { Rocket, Layers, TrendingUp, Check, type LucideIcon } from "lucide-react
 import { SectionHeading } from "@/components/ui/SectionHeading"
 import { SpotlightCard } from "@/components/ui/SpotlightCard"
 import { Card3D } from "@/components/ui/Card3D"
-import { RevealCursor } from "@/components/ui/RevealCursor"
 import type { Service } from "@/lib/types"
 
 const iconMap: Record<string, LucideIcon> = {
@@ -39,49 +38,7 @@ export function Services({ data }: ServicesProps) {
         {/* Animated gradient line between heading and cards */}
         <div className="animated-gradient-line w-1/2 mx-auto mb-12 -mt-6" />
 
-        <RevealCursor
-          revealContent={
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto h-full pointer-events-none">
-              {services.map((_, index) => {
-                const insightData = [
-                  { roi: "+340%", time: "5 jours", satisfaction: "98%" },
-                  { roi: "+520%", time: "8 jours", satisfaction: "99%" },
-                  { roi: "+280%", time: "continu", satisfaction: "97%" },
-                ][index]
-                return (
-                  <div
-                    key={`reveal-${index}`}
-                    className={`h-full flex flex-col items-center justify-center p-6 sm:p-8 ${index === 1 ? "md:-translate-y-4" : ""}`}
-                  >
-                    <div className="rounded-xl bg-accent/10 backdrop-blur-sm border border-accent/30 p-6 space-y-4 w-full">
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-green-400 shadow-lg shadow-green-400/50" />
-                          <span className="text-xs text-text-muted">ROI moyen</span>
-                          <span className="ml-auto text-lg font-bold text-green-400 stat-number font-mono">{insightData.roi}</span>
-                        </div>
-                        <div className="h-px bg-accent/20" />
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-accent-blue shadow-lg shadow-accent-blue/50" />
-                          <span className="text-xs text-text-muted">Temps moyen</span>
-                          <span className="ml-auto text-lg font-bold text-accent-blue stat-number font-mono">{insightData.time}</span>
-                        </div>
-                        <div className="h-px bg-accent/20" />
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-accent shadow-lg shadow-accent/50" />
-                          <span className="text-xs text-text-muted">Satisfaction</span>
-                          <span className="ml-auto text-lg font-bold text-accent stat-number font-mono">{insightData.satisfaction}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          }
-          hint="Deplacez votre curseur pour reveler les insights"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
             {services.map((service, index) => {
               const Icon = iconMap[service.icon] || Rocket
               const isPopular = index === 1
@@ -171,7 +128,6 @@ export function Services({ data }: ServicesProps) {
               )
             })}
           </div>
-        </RevealCursor>
       </div>
     </section>
   )
