@@ -5,6 +5,7 @@ import { LogoBar } from "@/components/sections/LogoBar"
 import { Problem } from "@/components/sections/Problem"
 import { Process } from "@/components/sections/Process"
 import { Results } from "@/components/sections/Results"
+import { ROISection } from "@/components/sections/ROISection"
 import { Services } from "@/components/sections/Services"
 import { Portfolio } from "@/components/sections/Portfolio"
 import { Pricing } from "@/components/sections/Pricing"
@@ -29,14 +30,15 @@ export default async function HomePage() {
         <div className="section-divider" />
         <LogoBar />
         <Problem data={data.about} />
-        <Process data={data.process} />
         <Results data={data.results} />
         <div className="section-divider" />
+        <ROISection />
+        <Process data={data.process} />
         <Portfolio data={data.portfolio} />
-        <Testimonials data={data.testimonials} />
         <Services data={data.services} />
         <FAQ />
         <Pricing data={data.pricing} />
+        <Testimonials data={data.testimonials} />
         <div className="section-divider" />
         <Stack />
         <CTAFinal />

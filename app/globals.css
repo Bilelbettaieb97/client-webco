@@ -326,6 +326,65 @@ body {
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
 }
 
+/* ── Typewriter cursor ─────────────────────────── */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.typewriter-cursor::after {
+  content: '|';
+  animation: blink-cursor 1s step-end infinite;
+  color: var(--accent);
+}
+
+/* ── Before/after slider handle ──────────────────── */
+.before-after-handle {
+  cursor: ew-resize;
+  touch-action: none;
+}
+
+/* ── Slider range input styling ──────────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
+}
+input[type="range"]::-webkit-slider-track {
+  height: 6px;
+  border-radius: 3px;
+  background: #27272a;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #8b5cf6;
+  border: 2px solid #a78bfa;
+  margin-top: -7px;
+}
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: #27272a;
+}
+input[type="range"]::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #8b5cf6;
+  border: 2px solid #a78bfa;
+}
+
+/* ── Number ticker animations ────────────────────── */
+@keyframes tick-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
 /* ── Reduced motion ────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,

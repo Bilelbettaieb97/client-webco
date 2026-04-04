@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion"
 import { MagneticButton } from "@/components/ui/MagneticButton"
 import { ParallaxSection } from "@/components/ui/ParallaxSection"
+import { BrowserMockup } from "@/components/ui/BrowserMockup"
 
 export function CTAFinal() {
   const shouldReduce = useReducedMotion()
@@ -52,6 +53,46 @@ export function CTAFinal() {
               contact@webco.fr
             </a>
           </p>
+
+          {/* Mini BrowserMockup — visual reminder of what they'll get */}
+          <motion.div
+            className="mt-10 max-w-sm mx-auto"
+            initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <BrowserMockup url="votresite.com" compact>
+              <div className="p-3 sm:p-4 bg-[#09090b] relative">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.06)_0%,transparent_60%)]" />
+                <div className="relative z-10 space-y-2">
+                  {/* Mini navbar */}
+                  <div className="flex items-center justify-between">
+                    <div className="h-1.5 w-10 bg-gradient-to-r from-violet-500 to-blue-500 rounded" />
+                    <div className="h-4 w-12 bg-gradient-to-r from-violet-600 to-blue-600 rounded" />
+                  </div>
+                  {/* Mini hero */}
+                  <div className="mt-2">
+                    <div className="h-2 w-3/4 bg-white/80 rounded mb-1" />
+                    <div className="h-2 w-1/2 bg-violet-400/40 rounded mb-2" />
+                    <div className="h-1 w-full bg-zinc-800 rounded mb-1" />
+                    <div className="h-1 w-4/5 bg-zinc-800 rounded mb-2" />
+                    <div className="h-4 w-20 bg-gradient-to-r from-violet-600 to-blue-600 rounded" />
+                  </div>
+                  {/* Conversion badge */}
+                  <div className="flex justify-end mt-1">
+                    <motion.div
+                      className="px-2 py-0.5 rounded bg-green-500/20 border border-green-500/30"
+                      animate={shouldReduce ? {} : { opacity: [1, 0.7, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      <span className="text-[7px] font-bold text-green-400 stat-number">7.8% conv.</span>
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+            </BrowserMockup>
+          </motion.div>
 
           {/* Trust elements */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-text-muted">

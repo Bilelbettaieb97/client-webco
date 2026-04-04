@@ -3,7 +3,7 @@
 import { motion, useReducedMotion, useMotionValue, useSpring } from "framer-motion"
 import { Star } from "lucide-react"
 import { AnimatedPaths } from "@/components/ui/AnimatedPaths"
-import { ContainerScroll } from "@/components/ui/ContainerScroll"
+import { LivePageDemo } from "@/components/ui/LivePageDemo"
 import { TextReveal } from "@/components/ui/TextReveal"
 import { MagneticButton } from "@/components/ui/MagneticButton"
 import { ParallaxSection } from "@/components/ui/ParallaxSection"
@@ -152,38 +152,15 @@ export function Hero({ data }: HeroProps) {
           </motion.div>
         </div>
 
-        {/* Container Scroll -- Laptop Mockup */}
-        <ContainerScroll>
-          {/* Fake landing page preview inside the laptop */}
-          <div className="aspect-video bg-white relative overflow-hidden">
-            <div className="absolute inset-0 p-6 sm:p-10">
-              {/* Nav bar */}
-              <div className="flex items-center justify-between mb-6 sm:mb-8">
-                <div className="h-3 w-24 bg-zinc-200 rounded-full" />
-                <div className="flex gap-3">
-                  <div className="h-2.5 w-10 bg-zinc-100 rounded-full" />
-                  <div className="h-2.5 w-10 bg-zinc-100 rounded-full" />
-                  <div className="h-2.5 w-10 bg-zinc-100 rounded-full" />
-                </div>
-              </div>
-              {/* Hero area */}
-              <div className="flex flex-col items-start mt-2 sm:mt-4">
-                <div className="h-3 w-32 bg-zinc-200 rounded mb-4" />
-                <div className="h-7 sm:h-8 w-3/4 bg-zinc-900 rounded mb-2" />
-                <div className="h-7 sm:h-8 w-1/2 bg-violet-500 rounded mb-6" />
-                <div className="h-3.5 w-full bg-zinc-100 rounded mb-2" />
-                <div className="h-3.5 w-5/6 bg-zinc-100 rounded mb-8" />
-                <div className="h-11 w-48 bg-violet-600 rounded-lg" />
-              </div>
-              {/* Trust bar */}
-              <div className="flex items-center gap-6 mt-8 sm:mt-12">
-                {[0, 1, 2, 3].map((i) => (
-                  <div key={i} className="h-2 w-16 bg-zinc-100 rounded-full" />
-                ))}
-              </div>
-            </div>
-          </div>
-        </ContainerScroll>
+        {/* LivePageDemo — Animated landing page being built in real-time */}
+        <motion.div
+          className="mt-16 sm:mt-20"
+          initial={{ opacity: 0, y: shouldReduce ? 0 : 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.4 }}
+        >
+          <LivePageDemo />
+        </motion.div>
       </div>
 
       {/* Animated gradient line divider at bottom */}

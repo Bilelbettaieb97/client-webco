@@ -5,6 +5,7 @@ import { ArrowRight, TrendingUp } from "lucide-react"
 import { SectionHeading } from "@/components/ui/SectionHeading"
 import { SpotlightCard } from "@/components/ui/SpotlightCard"
 import { Card3D } from "@/components/ui/Card3D"
+import { BeforeAfter } from "@/components/ui/BeforeAfter"
 import type { ResultsContent } from "@/lib/types"
 
 interface ResultsProps {
@@ -102,6 +103,29 @@ export function Results({ data }: ResultsProps) {
             <div className="absolute inset-0 bg-gradient-to-r from-accent-blue to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </a>
         </motion.div>
+
+        {/* ──── Before/After Interactive Slider ──── */}
+        <div className="mt-20 sm:mt-24">
+          <motion.div
+            className="text-center mb-10"
+            initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <p className="text-sm text-accent font-medium uppercase tracking-widest mb-3">
+              Avant / Apres
+            </p>
+            <h3 className="text-2xl sm:text-3xl font-display font-bold text-text">
+              Glissez pour voir la difference
+            </h3>
+            <p className="text-sm text-text-muted mt-2">
+              A gauche, une page generique. A droite, une landing page Webco.
+            </p>
+          </motion.div>
+
+          <BeforeAfter />
+        </div>
 
         {/* Animated gradient line divider at bottom */}
         <div className="mt-24 animated-gradient-line w-full" />
