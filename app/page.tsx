@@ -1,12 +1,17 @@
 import { getAllData } from "@/lib/db"
 import { Navbar } from "@/components/layout/Navbar"
 import { Hero } from "@/components/sections/Hero"
-import { LogoMarquee } from "@/components/sections/LogoMarquee"
+import { LogoBar } from "@/components/sections/LogoBar"
+import { Problem } from "@/components/sections/Problem"
+import { Process } from "@/components/sections/Process"
+import { Results } from "@/components/sections/Results"
 import { Services } from "@/components/sections/Services"
 import { Portfolio } from "@/components/sections/Portfolio"
-import { About } from "@/components/sections/About"
 import { Pricing } from "@/components/sections/Pricing"
 import { Testimonials } from "@/components/sections/Testimonials"
+import { Stack } from "@/components/sections/Stack"
+import { FAQ } from "@/components/sections/FAQ"
+import { CTAFinal } from "@/components/sections/CTAFinal"
 import { Contact } from "@/components/sections/Contact"
 import { Footer } from "@/components/layout/Footer"
 
@@ -20,12 +25,17 @@ export default async function HomePage() {
       <Navbar />
       <main id="main-content">
         <Hero data={data.hero} />
-        <LogoMarquee />
+        <LogoBar />
+        <Problem data={data.about} />
+        <Process data={data.process} />
+        <Results data={data.results} />
         <Services data={data.services} />
         <Portfolio data={data.portfolio} />
-        <About data={data.about} />
         <Pricing data={data.pricing} />
         <Testimonials data={data.testimonials} />
+        <Stack />
+        <FAQ />
+        <CTAFinal />
         <Contact data={data.contactInfo} />
       </main>
       <Footer />

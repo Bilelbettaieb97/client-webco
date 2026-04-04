@@ -16,16 +16,16 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Webco | Agence Web Premium',
+    default: 'Webco — Landing Pages B2B qui Convertissent',
     template: '%s | Webco',
   },
   description:
-    'Agence web premium specialisee dans la creation de sites performants, modernes et sur-mesure. Sites vitrines, landing pages, e-commerce et applications web.',
+    'Agence specialisee dans la creation de landing pages B2B a haute conversion. Design strategique, copywriting oriente resultats, A/B testing.',
   metadataBase: new URL('https://client-webco.vercel.app'),
   openGraph: {
-    title: 'Webco | Agence Web Premium',
+    title: 'Webco — Landing Pages B2B qui Convertissent',
     description:
-      'Nous creons des sites web qui convertissent. Design haut de gamme, performance optimale, SEO integre.',
+      'Agence specialisee dans la creation de landing pages B2B a haute conversion. Design strategique, copywriting oriente resultats, A/B testing.',
     url: 'https://client-webco.vercel.app',
     siteName: 'Webco',
     locale: 'fr_FR',
@@ -33,9 +33,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Webco | Agence Web Premium',
+    title: 'Webco — Landing Pages B2B qui Convertissent',
     description:
-      'Nous creons des sites web qui convertissent. Design haut de gamme, performance optimale, SEO integre.',
+      'Agence specialisee dans la creation de landing pages B2B a haute conversion. Design strategique, copywriting oriente resultats, A/B testing.',
   },
   robots: {
     index: true,

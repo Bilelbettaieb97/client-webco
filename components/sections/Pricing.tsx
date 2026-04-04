@@ -18,8 +18,8 @@ export function Pricing({ data }: PricingProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           badge="Tarifs"
-          title="Des formules adaptees a vos ambitions"
-          subtitle="Des solutions transparentes et sans surprise. Chaque projet est unique, contactez-nous pour un devis personnalise."
+          title="Investissez dans la conversion"
+          subtitle="Chaque euro investi dans une landing page optimisee vous revient multiplie. Choisissez la formule qui correspond a vos objectifs."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
@@ -83,7 +83,7 @@ export function Pricing({ data }: PricingProps) {
                       : "border border-zinc-700 text-text hover:border-accent/50 hover:bg-accent/5"
                   }`}
                 >
-                  Demarrer ce projet
+                  Reserver un appel
                 </a>
               </SpotlightCard>
             </motion.div>

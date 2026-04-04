@@ -5,10 +5,10 @@ import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-
 import { Menu, X } from "lucide-react"
 
 const navLinks = [
-  { href: "#services", label: "Services" },
-  { href: "#realisations", label: "Realisations" },
-  { href: "#tarifs", label: "Tarifs" },
-  { href: "#contact", label: "Contact" },
+  { href: "#process", label: "Process" },
+  { href: "#resultats", label: "Resultats" },
+  { href: "#offres", label: "Offres" },
+  { href: "#temoignages", label: "Temoignages" },
 ]
 
 export function Navbar() {
@@ -72,9 +72,9 @@ export function Navbar() {
               ))}
               <a
                 href="#contact"
-                className="px-5 py-2.5 text-sm font-medium rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white hover:opacity-90 transition-opacity cursor-pointer"
+                className="px-5 py-2.5 text-sm font-medium rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white hover:opacity-90 transition-opacity cursor-pointer min-h-[44px] flex items-center"
               >
-                Demarrer un projet
+                Reserver un appel
               </a>
             </div>
 
@@ -131,7 +131,7 @@ export function Navbar() {
                 transition={{ delay: 0.35 }}
                 className="mt-4 px-8 py-3 text-lg font-medium rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white"
               >
-                Demarrer un projet
+                Reserver un appel
               </motion.a>
             </div>
           </motion.div>

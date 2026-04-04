@@ -74,7 +74,35 @@ export interface HeroContent {
 export interface AboutContent {
   title: string
   description: string
-  stats: { label: string; value: number; suffix: string }[]
+  problem_points: string[]
+  solution_points: string[]
+}
+
+export interface ProcessStep {
+  number: string
+  title: string
+  description: string
+}
+
+export interface ProcessContent {
+  title: string
+  subtitle: string
+  steps: ProcessStep[]
+}
+
+export interface ResultCase {
+  client_type: string
+  before: string
+  after: string
+  metric: string
+  description: string
+  multiplier: string
+}
+
+export interface ResultsContent {
+  title: string
+  subtitle: string
+  cases: ResultCase[]
 }
 
 export interface ContactInfo {

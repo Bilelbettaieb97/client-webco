@@ -6,6 +6,8 @@ import type {
   PricingPlan,
   HeroContent,
   AboutContent,
+  ProcessContent,
+  ResultsContent,
   ContactInfo,
 } from './types'
 
@@ -20,14 +22,41 @@ const DEFAULT_HERO: HeroContent = {
 }
 
 const DEFAULT_ABOUT: AboutContent = {
-  title: "L'excellence digitale au service de votre croissance",
+  title: "Votre trafic ne convertit pas ?",
   description:
-    "Chez Webco, nous combinons expertise technique et vision strategique pour creer des experiences digitales exceptionnelles. Chaque projet est une opportunite de repousser les limites du web.",
-  stats: [
-    { label: 'Projets livres', value: 50, suffix: '+' },
-    { label: 'Satisfaction client', value: 98, suffix: '%' },
-    { label: "Annees d'experience", value: 5, suffix: '+' },
-    { label: 'Technologies', value: 15, suffix: '+' },
+    "On transforme vos visiteurs en clients qualifies grace a des landing pages B2B strategiques.",
+  problem_points: [
+    "Vous investissez en ads mais les visiteurs repartent sans convertir",
+    "Votre landing page est jolie mais ne genere pas de leads",
+    "Vous ne savez pas pourquoi votre taux de conversion stagne",
+    "Chaque lead vous coute de plus en plus cher",
+  ],
+  solution_points: [
+    "Chaque element de la page pense pour la conversion",
+    "Copywriting B2B oriente resultats, pas du blabla",
+    "A/B testing et optimisation data-driven",
+    "ROI mesurable des les premieres semaines",
+  ],
+}
+
+const DEFAULT_PROCESS: ProcessContent = {
+  title: "Notre process en 4 etapes",
+  subtitle: "Une methodologie eprouvee pour maximiser vos conversions.",
+  steps: [
+    { number: "01", title: "Audit & Strategie", description: "Analyse de votre marche, vos concurrents et votre audience pour definir la strategie de conversion optimale." },
+    { number: "02", title: "Copywriting & Design", description: "Redaction orientee conversion et design strategique. Chaque mot, chaque element visuel a un objectif precis." },
+    { number: "03", title: "Developpement & Integration", description: "Developpement sur-mesure, integration avec votre stack technique (CRM, analytics, ads)." },
+    { number: "04", title: "Optimisation & Growth", description: "A/B testing, analyse des heatmaps, optimisation continue pour ameliorer vos taux de conversion." },
+  ],
+}
+
+const DEFAULT_RESULTS: ResultsContent = {
+  title: "Des resultats, pas des promesses",
+  subtitle: "Voici les resultats concrets que nous avons obtenus pour nos clients B2B.",
+  cases: [
+    { client_type: "SaaS B2B", before: "1.8%", after: "7.2%", metric: "taux de conversion", description: "Refonte complete de la landing page d'acquisition avec A/B testing sur 3 variantes.", multiplier: "x4" },
+    { client_type: "Fintech B2B", before: "2.1%", after: "6.7%", metric: "taux de conversion", description: "Nouvelle landing page avec social proof et copywriting oriente decision-makers.", multiplier: "x3.2" },
+    { client_type: "RH & Recrutement", before: "1.5%", after: "5.8%", metric: "taux de conversion", description: "Landing page orientee demo avec video testimoniale et formulaire simplifie.", multiplier: "x3.9" },
   ],
 }
 
@@ -177,6 +206,8 @@ export async function getAllData() {
     return {
       hero: DEFAULT_HERO,
       about: DEFAULT_ABOUT,
+      process: DEFAULT_PROCESS,
+      results: DEFAULT_RESULTS,
       contactInfo: DEFAULT_CONTACT_INFO,
       services: DEFAULT_SERVICES,
       portfolio: DEFAULT_PORTFOLIO,
@@ -199,6 +230,8 @@ export async function getAllData() {
   return {
     hero: getSectionContent<HeroContent>(content, 'hero', DEFAULT_HERO),
     about: getSectionContent<AboutContent>(content, 'about', DEFAULT_ABOUT),
+    process: getSectionContent<ProcessContent>(content, 'process', DEFAULT_PROCESS),
+    results: getSectionContent<ResultsContent>(content, 'results', DEFAULT_RESULTS),
     contactInfo: getSectionContent<ContactInfo>(content, 'contact_info', DEFAULT_CONTACT_INFO),
     services: (servicesRes.data as Service[]) ?? DEFAULT_SERVICES,
     portfolio: (portfolioRes.data as PortfolioItem[]) ?? DEFAULT_PORTFOLIO,

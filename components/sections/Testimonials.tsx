@@ -11,49 +11,34 @@ interface TestimonialsProps {
 
 const defaultTestimonials: Testimonial[] = [
   {
-    id: "d1", name: "Sophie Laurent", role: "CEO", company: "TechVision",
-    content: "Webco a transforme notre presence en ligne. Le site est non seulement magnifique mais convertit deux fois plus qu'avant. Un travail exceptionnel.",
+    id: "d1", name: "Sophie Laurent", role: "Head of Growth", company: "DataFlow",
+    content: "Notre taux de conversion est passe de 1.8% a 7.2% en 3 semaines. L'investissement s'est rembourse en 10 jours. Webco maitrise la conversion B2B.",
     rating: 5, sort_order: 1,
   },
   {
-    id: "d2", name: "Marc Dubois", role: "Fondateur", company: "GreenStart",
-    content: "Professionnalisme, reactivite et creativite. L'equipe Webco a parfaitement compris notre vision et l'a sublimee dans un site qui nous ressemble.",
+    id: "d2", name: "Marc Dubois", role: "CMO", company: "PaySecure",
+    content: "On a teste 3 agences avant Webco. La difference ? Ils comprennent le B2B. Chaque element de la page a un objectif mesurable.",
     rating: 5, sort_order: 2,
   },
   {
-    id: "d3", name: "Claire Martin", role: "Directrice Marketing", company: "Luxoria",
-    content: "Le design est d'une elegance rare. Nos clients nous complimentent regulierement sur notre site. Le ROI a ete immediat.",
+    id: "d3", name: "Claire Martin", role: "CEO", company: "TalentHub",
+    content: "Le copywriting a tout change. Nos visiteurs comprennent enfin notre proposition de valeur en 5 secondes. Les demandes de demo ont explose.",
     rating: 5, sort_order: 3,
   },
   {
-    id: "d4", name: "Thomas Petit", role: "CTO", company: "DataFlow",
-    content: "Architecture solide, code propre, performance au rendez-vous. Webco maitrise la technique autant que le design.",
+    id: "d4", name: "Thomas Petit", role: "VP Marketing", company: "CloudOps",
+    content: "Le process est carre : audit, strategie, execution, optimisation. Pas de blabla. En 2 semaines on avait une landing page qui convertit x3.",
     rating: 5, sort_order: 4,
   },
   {
-    id: "d5", name: "Julie Moreau", role: "Fondatrice", company: "BelleVie",
-    content: "Notre boutique en ligne depasse toutes nos attentes. L'experience d'achat est fluide et nos ventes ont explose depuis le lancement.",
+    id: "d5", name: "Julie Moreau", role: "Head of Demand Gen", company: "LegalTech Pro",
+    content: "L'A/B testing continu nous a permis d'optimiser chaque semaine. Apres 2 mois, notre cout par lead a baisse de 60%.",
     rating: 5, sort_order: 5,
   },
   {
-    id: "d6", name: "Antoine Bernard", role: "Directeur", company: "ArchiDesign",
-    content: "Un site qui reflete parfaitement notre ADN. Les animations sont subtiles et elegantes, exactement ce que nous cherchions.",
+    id: "d6", name: "Antoine Bernard", role: "Fondateur", company: "GreenSupply",
+    content: "Webco a compris notre marche en un call. La landing page parle directement aux directeurs logistique. Les leads sont ultra-qualifies.",
     rating: 5, sort_order: 6,
-  },
-  {
-    id: "d7", name: "Emma Leroy", role: "CMO", company: "FoodLab",
-    content: "La landing page a un taux de conversion de 12%. Webco comprend le marketing autant que le developpement. Partenaire ideal.",
-    rating: 5, sort_order: 7,
-  },
-  {
-    id: "d8", name: "Pierre Girard", role: "Gerant", company: "AutoPro",
-    content: "Depuis la refonte par Webco, les demandes de devis ont triple. Un investissement qui s'est rembourse en deux mois.",
-    rating: 5, sort_order: 8,
-  },
-  {
-    id: "d9", name: "Camille Roux", role: "Fondatrice", company: "YogaZen",
-    content: "Un site qui respire la serenite, comme notre studio. Le panel admin est intuitif, je peux tout modifier moi-meme.",
-    rating: 5, sort_order: 9,
   },
 ]
 
@@ -107,12 +92,12 @@ export function Testimonials({ data }: TestimonialsProps) {
   const doubled3 = [...col3, ...col3]
 
   return (
-    <section className="relative py-24 sm:py-32 bg-bg overflow-hidden" aria-label="Temoignages">
+    <section id="temoignages" className="relative py-24 sm:py-32 bg-bg overflow-hidden" aria-label="Temoignages">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           badge="Temoignages"
-          title="Ce que nos clients disent de nous"
-          subtitle="La satisfaction de nos clients est notre meilleure carte de visite."
+          title="Ce que nos clients B2B en disent"
+          subtitle="Des resultats concrets, racontes par ceux qui les vivent au quotidien."
         />
 
         {/* Columns container with mask */}
@@ -124,7 +109,7 @@ export function Testimonials({ data }: TestimonialsProps) {
           }}
         >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-full">
-            {/* Column 1 — scrolls up */}
+            {/* Column 1 -- scrolls up */}
             <div className="overflow-hidden relative">
               <motion.div
                 className={shouldReduce ? "" : "animate-scroll-up"}
@@ -135,7 +120,7 @@ export function Testimonials({ data }: TestimonialsProps) {
               </motion.div>
             </div>
 
-            {/* Column 2 — scrolls down */}
+            {/* Column 2 -- scrolls down */}
             <div className="overflow-hidden relative hidden md:block">
               <motion.div
                 className={shouldReduce ? "" : "animate-scroll-down"}
@@ -146,7 +131,7 @@ export function Testimonials({ data }: TestimonialsProps) {
               </motion.div>
             </div>
 
-            {/* Column 3 — scrolls up (different speed via CSS) */}
+            {/* Column 3 -- scrolls up (different speed) */}
             <div className="overflow-hidden relative hidden md:block">
               <motion.div
                 className={shouldReduce ? "" : "animate-scroll-up"}
