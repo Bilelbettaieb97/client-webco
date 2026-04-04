@@ -1,167 +1,142 @@
-'use client'
+"use client"
 
-import { useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { useState, useEffect } from "react"
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion"
+import { Menu, X } from "lucide-react"
 
 const navLinks = [
-  { label: 'Services', page: 1 },
-  { label: 'Realisations', page: 2 },
-  { label: 'A propos', page: 3 },
-  { label: 'Tarifs', page: 4 },
-  { label: 'Temoignages', page: 5 },
-  { label: 'Contact', page: 6 },
+  { href: "#services", label: "Services" },
+  { href: "#realisations", label: "Realisations" },
+  { href: "#tarifs", label: "Tarifs" },
+  { href: "#contact", label: "Contact" },
 ]
 
-const TOTAL_PAGES = 7
-
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [scrollProgress, setScrollProgress] = useState(0)
-  const shouldReduce = useReducedMotion()
+  const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const { scrollYProgress } = useScroll()
+  const [progress, setProgress] = useState(0)
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    setProgress(latest)
+  })
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-      const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0
-      setScrollProgress(Math.min(progress, 1))
+      setIsScrolled(window.scrollY > 50)
     }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden'
+    if (isOpen) {
+      document.body.style.overflow = "hidden"
     } else {
-      document.body.style.overflow = ''
+      document.body.style.overflow = ""
     }
     return () => {
-      document.body.style.overflow = ''
+      document.body.style.overflow = ""
     }
-  }, [mobileOpen])
-
-  const scrollToPage = useCallback((pageIndex: number) => {
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-    const targetScroll = (pageIndex / TOTAL_PAGES) * maxScroll
-    window.scrollTo({ top: targetScroll, behavior: 'smooth' })
-    setMobileOpen(false)
-  }, [])
+  }, [isOpen])
 
   return (
-    <>
-      <motion.header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'glass-strong shadow-lg shadow-black/20' : 'bg-transparent'
+    <header className="fixed top-0 left-0 right-0 z-50">
+      <nav
+        className={`transition-all duration-300 ${
+          isScrolled ? "glass-strong shadow-lg shadow-black/10" : "bg-transparent"
         }`}
-        initial={{ y: shouldReduce ? 0 : -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
+        aria-label="Navigation principale"
       >
-        {/* Scroll progress bar */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-transparent">
-          <motion.div
-            className="h-full bg-gradient-to-r from-neon-violet via-neon-blue to-neon-cyan"
-            style={{ width: `${scrollProgress * 100}%` }}
-            transition={{ duration: 0.1 }}
-          />
-        </div>
-
-        <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Navigation principale">
-          <div className="flex h-16 sm:h-20 items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo */}
-            <button
-              onClick={() => scrollToPage(0)}
-              className="flex items-center gap-2 group"
-              aria-label="Retour en haut"
+            <a
+              href="#"
+              className="text-xl sm:text-2xl font-display font-bold text-gradient"
+              aria-label="Webco - Retour a l'accueil"
             >
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-neon-violet to-neon-blue flex items-center justify-center">
-                <span className="text-white font-display font-bold text-sm">W</span>
-              </div>
-              <span className="text-xl font-display font-bold text-text-primary group-hover:text-gradient transition-all">
-                Webco
-              </span>
-            </button>
+              Webco
+            </a>
 
-            {/* Desktop nav */}
+            {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-8">
               {navLinks.map((link) => (
-                <button
-                  key={link.label}
-                  onClick={() => scrollToPage(link.page)}
-                  className="text-sm text-text-muted hover:text-text-primary transition-colors duration-200 font-medium"
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-text-muted hover:text-text transition-colors duration-200 font-medium"
                 >
                   {link.label}
-                </button>
+                </a>
               ))}
-              <button
-                onClick={() => scrollToPage(6)}
-                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-display font-semibold text-xs tracking-wide bg-gradient-to-r from-neon-violet to-neon-blue text-white hover:shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:scale-105 transition-all duration-300 min-h-[44px]"
+              <a
+                href="#contact"
+                className="px-5 py-2.5 text-sm font-medium rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white hover:opacity-90 transition-opacity cursor-pointer"
               >
                 Demarrer un projet
-              </button>
+              </a>
             </div>
 
-            {/* Mobile hamburger */}
+            {/* Mobile Toggle */}
             <button
-              className="md:hidden flex items-center justify-center h-11 w-11 rounded-lg glass"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label={mobileOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
-              aria-expanded={mobileOpen}
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden p-2 text-text-muted hover:text-text transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+              aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              aria-expanded={isOpen}
             >
-              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
-        </nav>
-      </motion.header>
+        </div>
 
-      {/* Mobile drawer */}
-      <AnimatePresence>
-        {mobileOpen && (
+        {/* Scroll progress bar */}
+        <div className="h-[2px] bg-zinc-800/50">
           <motion.div
-            className="fixed inset-0 z-40 md:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            className="h-full bg-gradient-to-r from-accent to-accent-blue"
+            style={{ width: `${progress * 100}%` }}
+          />
+        </div>
+      </nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed inset-0 top-0 z-40 bg-bg/95 backdrop-blur-xl md:hidden"
           >
-            <div
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-              onClick={() => setMobileOpen(false)}
-            />
-            <motion.nav
-              className="absolute right-0 top-0 h-full w-72 bg-bg-card border-l border-white/10 p-6 pt-24 flex flex-col gap-2"
-              initial={{ x: shouldReduce ? 0 : 300 }}
-              animate={{ x: 0 }}
-              exit={{ x: 300 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              aria-label="Menu mobile"
-            >
+            <div className="flex flex-col items-center justify-center h-full gap-8">
               {navLinks.map((link, i) => (
-                <motion.button
-                  key={link.label}
-                  className="text-lg font-display font-medium text-text-muted hover:text-text-primary transition-colors py-3 border-b border-white/5 text-left"
-                  initial={{ opacity: 0, x: shouldReduce ? 0 : 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  onClick={() => scrollToPage(link.page)}
+                <motion.a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.05 }}
+                  className="text-2xl font-display font-semibold text-text hover:text-accent transition-colors"
                 >
                   {link.label}
-                </motion.button>
+                </motion.a>
               ))}
-              <div className="mt-6">
-                <button
-                  onClick={() => scrollToPage(6)}
-                  className="w-full text-center inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-display font-semibold text-sm tracking-wide bg-gradient-to-r from-neon-violet to-neon-blue text-white hover:shadow-[0_0_25px_rgba(139,92,246,0.4)] transition-all duration-300 min-h-[44px]"
-                >
-                  Demarrer un projet
-                </button>
-              </div>
-            </motion.nav>
+              <motion.a
+                href="#contact"
+                onClick={() => setIsOpen(false)}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+                className="mt-4 px-8 py-3 text-lg font-medium rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white"
+              >
+                Demarrer un projet
+              </motion.a>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </header>
   )
 }

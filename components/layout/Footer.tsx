@@ -1,106 +1,119 @@
-import { Globe, Link2, ExternalLink } from 'lucide-react'
+import { Code, ExternalLink } from "lucide-react"
 
-const footerLinks = [
-  {
-    title: 'Services',
-    links: [
-      { label: 'Site Vitrine', href: '#services' },
-      { label: 'Landing Page', href: '#services' },
-      { label: 'E-commerce', href: '#services' },
-      { label: 'Application Web', href: '#services' },
-    ],
-  },
-  {
-    title: 'Entreprise',
-    links: [
-      { label: 'A propos', href: '#about' },
-      { label: 'Realisations', href: '#portfolio' },
-      { label: 'Tarifs', href: '#pricing' },
-      { label: 'Contact', href: '#contact' },
-    ],
-  },
-  {
-    title: 'Legal',
-    links: [
-      { label: 'Mentions legales', href: '#' },
-      { label: 'Politique de confidentialite', href: '#' },
-      { label: 'CGV', href: '#' },
-    ],
-  },
-]
-
-const socialLinks = [
-  { label: 'LinkedIn', href: 'https://linkedin.com/company/webco', icon: Link2 },
-  { label: 'Twitter', href: 'https://twitter.com/webco', icon: ExternalLink },
-  { label: 'GitHub', href: 'https://github.com/webco', icon: Globe },
-]
+const footerLinks = {
+  services: [
+    { label: "Site Vitrine", href: "#services" },
+    { label: "Landing Page", href: "#services" },
+    { label: "E-commerce", href: "#services" },
+    { label: "Application Web", href: "#services" },
+  ],
+  company: [
+    { label: "A propos", href: "#about" },
+    { label: "Realisations", href: "#realisations" },
+    { label: "Tarifs", href: "#tarifs" },
+    { label: "Contact", href: "#contact" },
+  ],
+  socials: [
+    { label: "GitHub", href: "https://github.com/webco" },
+    { label: "LinkedIn", href: "https://linkedin.com/company/webco" },
+    { label: "Twitter", href: "https://twitter.com/webco" },
+  ],
+}
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-white/5">
-      {/* Gradient border top */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-neon-violet/50 to-transparent" />
+    <footer className="relative border-t border-zinc-800" role="contentinfo">
+      {/* Gradient border line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-neon-violet to-neon-blue flex items-center justify-center">
-                <span className="text-white font-display font-bold text-sm">W</span>
-              </div>
-              <span className="text-xl font-display font-bold">Webco</span>
-            </div>
-            <p className="text-text-muted text-sm leading-relaxed max-w-xs">
-              Agence web premium specialisee dans la creation de sites
-              performants et sur-mesure qui transforment vos visiteurs en
-              clients.
+          <div className="lg:col-span-1">
+            <a href="#" className="text-2xl font-display font-bold text-gradient">
+              Webco
+            </a>
+            <p className="mt-4 text-sm text-text-muted leading-relaxed max-w-xs">
+              Agence web premium. Nous creons des sites web d&apos;exception qui transforment vos visiteurs en clients.
             </p>
-            <div className="flex gap-3 mt-6">
-              {socialLinks.map((social) => (
+            <div className="flex gap-4 mt-6">
+              {footerLinks.socials.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="h-10 w-10 rounded-lg glass flex items-center justify-center text-text-muted hover:text-neon-violet hover:border-neon-violet/30 transition-colors"
+                  className="p-2.5 rounded-lg bg-zinc-800/50 text-text-muted hover:text-accent hover:bg-zinc-800 transition-all duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center gap-1.5 text-xs font-medium"
                   aria-label={social.label}
                 >
-                  <social.icon className="h-4 w-4" />
+                  <ExternalLink size={14} />
+                  {social.label}
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Links */}
-          {footerLinks.map((group) => (
-            <div key={group.title}>
-              <h3 className="font-display font-semibold text-sm uppercase tracking-wider text-text-primary mb-4">
-                {group.title}
-              </h3>
-              <ul className="space-y-3">
-                {group.links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-text-muted hover:text-text-primary transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Services */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-text mb-4">
+              Services
+            </h3>
+            <ul className="space-y-3">
+              {footerLinks.services.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="text-sm text-text-muted hover:text-text transition-colors">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-text mb-4">
+              Entreprise
+            </h3>
+            <ul className="space-y-3">
+              {footerLinks.company.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="text-sm text-text-muted hover:text-text transition-colors">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-text mb-4">
+              Contact
+            </h3>
+            <ul className="space-y-3 text-sm text-text-muted">
+              <li>
+                <a href="mailto:contact@webco.fr" className="hover:text-text transition-colors">
+                  contact@webco.fr
+                </a>
+              </li>
+              <li>
+                <a href="tel:+33123456789" className="hover:text-text transition-colors">
+                  +33 1 23 45 67 89
+                </a>
+              </li>
+              <li>Paris, France</li>
+            </ul>
+          </div>
         </div>
 
         {/* Bottom */}
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="mt-16 pt-8 border-t border-zinc-800/50 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-text-muted">
             &copy; {new Date().getFullYear()} Webco. Tous droits reserves.
           </p>
-          <p className="text-xs text-text-muted">
-            Concu avec passion a Paris
+          <p className="text-xs text-text-muted flex items-center gap-1.5">
+            <Code size={14} className="text-accent" />
+            Built with passion
           </p>
         </div>
       </div>

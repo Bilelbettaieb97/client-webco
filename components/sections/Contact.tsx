@@ -1,324 +1,322 @@
-'use client'
+"use client"
 
-import { useState, type FormEvent } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
-import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle, Link2, ExternalLink, Globe } from 'lucide-react'
-import { SectionHeading } from '@/components/ui/SectionHeading'
-import { NeonButton } from '@/components/ui/NeonButton'
-import type { ContactInfo } from '@/lib/types'
-
-const projectTypes = [
-  'Site Vitrine',
-  'Landing Page',
-  'E-commerce',
-  'Application Web',
-  'Refonte de site',
-  'Autre',
-]
-
-const budgets = [
-  'Moins de 2 000 EUR',
-  '2 000 - 5 000 EUR',
-  '5 000 - 10 000 EUR',
-  'Plus de 10 000 EUR',
-]
-
-const socialIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  LinkedIn: Link2,
-  Twitter: ExternalLink,
-  GitHub: Globe,
-}
+import { useState, type FormEvent } from "react"
+import { motion, useReducedMotion } from "framer-motion"
+import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle } from "lucide-react"
+import { SectionHeading } from "@/components/ui/SectionHeading"
+import { SpotlightCard } from "@/components/ui/SpotlightCard"
+import type { ContactInfo } from "@/lib/types"
 
 interface ContactProps {
   data: ContactInfo
 }
 
+const projectTypes = [
+  "Site Vitrine",
+  "Landing Page",
+  "E-commerce",
+  "Application Web",
+  "Refonte de site",
+  "Autre",
+]
+
+const budgets = [
+  "< 2 000 EUR",
+  "2 000 - 5 000 EUR",
+  "5 000 - 10 000 EUR",
+  "10 000 - 20 000 EUR",
+  "> 20 000 EUR",
+]
+
 export function Contact({ data }: ContactProps) {
   const shouldReduce = useReducedMotion()
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const [errorMsg, setErrorMsg] = useState('')
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
+  const [errorMessage, setErrorMessage] = useState("")
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setStatus('loading')
-    setErrorMsg('')
+    setStatus("loading")
+    setErrorMessage("")
 
-    const form = new FormData(e.currentTarget)
+    const formData = new FormData(e.currentTarget)
     const body = {
-      name: form.get('name') as string,
-      email: form.get('email') as string,
-      phone: form.get('phone') as string,
-      company: form.get('company') as string,
-      project_type: form.get('project_type') as string,
-      budget: form.get('budget') as string,
-      message: form.get('message') as string,
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      phone: (formData.get("phone") as string) || undefined,
+      company: (formData.get("company") as string) || undefined,
+      project_type: (formData.get("project_type") as string) || undefined,
+      budget: (formData.get("budget") as string) || undefined,
+      message: formData.get("message") as string,
     }
 
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       })
 
       if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error || 'Une erreur est survenue')
+        const json = (await res.json()) as { error?: string }
+        throw new Error(json.error || "Une erreur est survenue")
       }
 
-      setStatus('success')
+      setStatus("success")
+      ;(e.target as HTMLFormElement).reset()
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : 'Erreur serveur')
-      setStatus('error')
+      setStatus("error")
+      setErrorMessage(err instanceof Error ? err.message : "Une erreur est survenue")
     }
   }
 
-  const contactInfo = [
-    { icon: Mail, label: 'Email', value: data.email, href: `mailto:${data.email}` },
-    { icon: Phone, label: 'Telephone', value: data.phone, href: `tel:${data.phone}` },
-    { icon: MapPin, label: 'Adresse', value: data.address, href: undefined },
+  const contactItems = [
+    { icon: Mail, label: "Email", value: data.email, href: `mailto:${data.email}` },
+    { icon: Phone, label: "Telephone", value: data.phone, href: `tel:${data.phone.replace(/\s/g, "")}` },
+    { icon: MapPin, label: "Adresse", value: data.address, href: undefined },
   ]
 
   return (
-    <section id="contact" className="py-24 sm:py-32 relative" aria-label="Contact">
-      <div className="absolute inset-0 bg-grid opacity-30" aria-hidden="true" />
-
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="relative py-24 sm:py-32 bg-bg bg-grid" aria-label="Contact">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
+          badge="Contact"
           title="Parlons de votre projet"
-          subtitle="Decrivez-nous votre besoin et recevez une proposition detaillee sous 48h."
+          subtitle="Decrivez-nous votre besoin et nous vous repondrons sous 24 heures avec une proposition personnalisee."
         />
 
-        <div className="mt-16 grid grid-cols-1 lg:grid-cols-5 gap-12">
-          {/* Form */}
-          <motion.div
-            className="lg:col-span-3"
-            initial={{ opacity: 0, x: shouldReduce ? 0 : -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            {status === 'success' ? (
-              <motion.div
-                className="glass rounded-2xl p-12 text-center"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-              >
-                <CheckCircle2 className="h-12 w-12 text-green-400 mx-auto mb-4" />
-                <h3 className="text-xl font-display font-semibold text-text-primary">
-                  Message envoye !
-                </h3>
-                <p className="mt-2 text-text-muted">
-                  Merci pour votre message. Nous vous recontacterons sous 48h.
-                </p>
-                <button
-                  onClick={() => setStatus('idle')}
-                  className="mt-6 text-sm text-neon-violet hover:text-neon-blue transition-colors"
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+          {/* Form — 3 cols */}
+          <div className="lg:col-span-3">
+            <SpotlightCard className="p-6 sm:p-8">
+              {status === "success" ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-12"
                 >
-                  Envoyer un autre message
-                </button>
-              </motion.div>
-            ) : (
-              <form onSubmit={handleSubmit} className="glass rounded-2xl p-8 space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-text-muted mb-1.5">
-                      Nom complet *
-                    </label>
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      required
-                      aria-required="true"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-text-primary placeholder-text-muted/50 focus:border-neon-violet/50 focus:ring-1 focus:ring-neon-violet/50 transition-colors outline-none"
-                      placeholder="Jean Dupont"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-text-muted mb-1.5">
-                      Email *
-                    </label>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      aria-required="true"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-text-primary placeholder-text-muted/50 focus:border-neon-violet/50 focus:ring-1 focus:ring-neon-violet/50 transition-colors outline-none"
-                      placeholder="jean@entreprise.fr"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-text-muted mb-1.5">
-                      Telephone
-                    </label>
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-text-primary placeholder-text-muted/50 focus:border-neon-violet/50 focus:ring-1 focus:ring-neon-violet/50 transition-colors outline-none"
-                      placeholder="06 12 34 56 78"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="company" className="block text-sm font-medium text-text-muted mb-1.5">
-                      Entreprise
-                    </label>
-                    <input
-                      id="company"
-                      name="company"
-                      type="text"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-text-primary placeholder-text-muted/50 focus:border-neon-violet/50 focus:ring-1 focus:ring-neon-violet/50 transition-colors outline-none"
-                      placeholder="Nom de votre entreprise"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="project_type" className="block text-sm font-medium text-text-muted mb-1.5">
-                      Type de projet
-                    </label>
-                    <select
-                      id="project_type"
-                      name="project_type"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-text-primary focus:border-neon-violet/50 focus:ring-1 focus:ring-neon-violet/50 transition-colors outline-none appearance-none"
-                    >
-                      <option value="">Selectionnez</option>
-                      {projectTypes.map((t) => (
-                        <option key={t} value={t} className="bg-bg-card text-text-primary">
-                          {t}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label htmlFor="budget" className="block text-sm font-medium text-text-muted mb-1.5">
-                      Budget
-                    </label>
-                    <select
-                      id="budget"
-                      name="budget"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-text-primary focus:border-neon-violet/50 focus:ring-1 focus:ring-neon-violet/50 transition-colors outline-none appearance-none"
-                    >
-                      <option value="">Selectionnez</option>
-                      {budgets.map((b) => (
-                        <option key={b} value={b} className="bg-bg-card text-text-primary">
-                          {b}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-text-muted mb-1.5">
-                    Message *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={5}
-                    required
-                    aria-required="true"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-text-primary placeholder-text-muted/50 focus:border-neon-violet/50 focus:ring-1 focus:ring-neon-violet/50 transition-colors outline-none resize-none"
-                    placeholder="Decrivez votre projet, vos objectifs, vos delais..."
-                  />
-                </div>
-
-                {status === 'error' && (
-                  <div className="flex items-center gap-2 text-red-400 text-sm" role="alert">
-                    <AlertCircle className="h-4 w-4 shrink-0" />
-                    {errorMsg}
-                  </div>
-                )}
-
-                <NeonButton
-                  type="submit"
-                  variant="primary"
-                  disabled={status === 'loading'}
-                  className="w-full sm:w-auto"
-                >
-                  {status === 'loading' ? (
-                    'Envoi en cours...'
-                  ) : (
-                    <>
-                      <Send className="h-4 w-4" />
-                      Envoyer le message
-                    </>
-                  )}
-                </NeonButton>
-              </form>
-            )}
-          </motion.div>
-
-          {/* Info */}
-          <motion.div
-            className="lg:col-span-2 space-y-6"
-            initial={{ opacity: 0, x: shouldReduce ? 0 : 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-          >
-            {contactInfo.map((item) => (
-              <div key={item.label} className="glass rounded-2xl p-6 flex items-center gap-4">
-                <div className="h-12 w-12 shrink-0 rounded-xl bg-neon-violet/10 flex items-center justify-center">
-                  <item.icon className="h-5 w-5 text-neon-violet" />
-                </div>
-                <div>
-                  <p className="text-xs text-text-muted uppercase tracking-wider">
-                    {item.label}
+                  <CheckCircle2 size={48} className="mx-auto text-green-400 mb-4" />
+                  <h3 className="text-xl font-display font-bold text-text mb-2">
+                    Message envoye !
+                  </h3>
+                  <p className="text-text-muted">
+                    Merci pour votre message. Nous vous repondrons dans les 24 heures.
                   </p>
-                  {item.href ? (
-                    <a
-                      href={item.href}
-                      className="text-sm font-medium text-text-primary hover:text-neon-violet transition-colors"
+                  <button
+                    onClick={() => setStatus("idle")}
+                    className="mt-6 px-6 py-2 text-sm font-medium rounded-lg border border-zinc-700 text-text hover:border-accent/50 transition-colors cursor-pointer min-h-[44px]"
+                  >
+                    Envoyer un autre message
+                  </button>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium text-text mb-1.5">
+                        Nom complet *
+                      </label>
+                      <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        required
+                        aria-required="true"
+                        className="w-full px-4 py-3 text-sm rounded-lg bg-zinc-800/50 border border-zinc-700 text-text placeholder:text-text-muted/50 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
+                        placeholder="Jean Dupont"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-text mb-1.5">
+                        Email *
+                      </label>
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                        aria-required="true"
+                        className="w-full px-4 py-3 text-sm rounded-lg bg-zinc-800/50 border border-zinc-700 text-text placeholder:text-text-muted/50 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
+                        placeholder="jean@exemple.fr"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-medium text-text mb-1.5">
+                        Telephone
+                      </label>
+                      <input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        className="w-full px-4 py-3 text-sm rounded-lg bg-zinc-800/50 border border-zinc-700 text-text placeholder:text-text-muted/50 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
+                        placeholder="+33 6 12 34 56 78"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="company" className="block text-sm font-medium text-text mb-1.5">
+                        Entreprise
+                      </label>
+                      <input
+                        id="company"
+                        name="company"
+                        type="text"
+                        className="w-full px-4 py-3 text-sm rounded-lg bg-zinc-800/50 border border-zinc-700 text-text placeholder:text-text-muted/50 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
+                        placeholder="Nom de votre entreprise"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                      <label htmlFor="project_type" className="block text-sm font-medium text-text mb-1.5">
+                        Type de projet
+                      </label>
+                      <select
+                        id="project_type"
+                        name="project_type"
+                        className="w-full px-4 py-3 text-sm rounded-lg bg-zinc-800/50 border border-zinc-700 text-text focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors cursor-pointer"
+                      >
+                        <option value="">Selectionnez...</option>
+                        {projectTypes.map((type) => (
+                          <option key={type} value={type}>
+                            {type}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label htmlFor="budget" className="block text-sm font-medium text-text mb-1.5">
+                        Budget
+                      </label>
+                      <select
+                        id="budget"
+                        name="budget"
+                        className="w-full px-4 py-3 text-sm rounded-lg bg-zinc-800/50 border border-zinc-700 text-text focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors cursor-pointer"
+                      >
+                        <option value="">Selectionnez...</option>
+                        {budgets.map((b) => (
+                          <option key={b} value={b}>
+                            {b}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-text mb-1.5">
+                      Votre message *
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      required
+                      aria-required="true"
+                      rows={5}
+                      className="w-full px-4 py-3 text-sm rounded-lg bg-zinc-800/50 border border-zinc-700 text-text placeholder:text-text-muted/50 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors resize-none"
+                      placeholder="Decrivez votre projet, vos objectifs, votre calendrier..."
+                    />
+                  </div>
+
+                  {/* Error */}
+                  {status === "error" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-center gap-2 text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-3"
+                      role="alert"
                     >
-                      {item.value}
-                    </a>
-                  ) : (
-                    <p className="text-sm font-medium text-text-primary">{item.value}</p>
+                      <AlertCircle size={16} />
+                      {errorMessage}
+                    </motion.div>
                   )}
-                </div>
-              </div>
+
+                  <button
+                    type="submit"
+                    disabled={status === "loading"}
+                    className="w-full py-3.5 text-sm font-semibold rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"
+                  >
+                    {status === "loading" ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Envoi en cours...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={16} />
+                        Envoyer le message
+                      </>
+                    )}
+                  </button>
+                </form>
+              )}
+            </SpotlightCard>
+          </div>
+
+          {/* Info — 2 cols */}
+          <div className="lg:col-span-2 space-y-6">
+            {contactItems.map((item, index) => (
+              <motion.div
+                key={item.label}
+                initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+              >
+                <SpotlightCard className="p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-accent/10 text-accent flex items-center justify-center">
+                      <item.icon size={20} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium uppercase tracking-wider text-text-muted mb-1">
+                        {item.label}
+                      </p>
+                      {item.href ? (
+                        <a href={item.href} className="text-sm text-text hover:text-accent transition-colors">
+                          {item.value}
+                        </a>
+                      ) : (
+                        <p className="text-sm text-text">{item.value}</p>
+                      )}
+                    </div>
+                  </div>
+                </SpotlightCard>
+              </motion.div>
             ))}
 
-            {/* Socials */}
-            <div className="glass rounded-2xl p-6">
-              <p className="text-xs text-text-muted uppercase tracking-wider mb-4">
-                Suivez-nous
-              </p>
-              <div className="flex gap-3">
-                {data.socials.map((social) => {
-                  const Icon = socialIconMap[social.platform] || Globe
-                  return (
-                    <a
-                      key={social.platform}
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="h-10 w-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-text-muted hover:text-neon-violet hover:border-neon-violet/30 transition-colors"
-                      aria-label={social.platform}
-                    >
-                      <Icon className="h-4 w-4" />
-                    </a>
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* Quick info */}
-            <div className="glass rounded-2xl p-6">
-              <p className="text-sm text-text-muted leading-relaxed">
-                Reponse garantie sous <span className="text-text-primary font-semibold">48h</span>.
-                Devis detaille et gratuit pour chaque projet.
-              </p>
-            </div>
-          </motion.div>
+            {/* Social links */}
+            {data.socials && data.socials.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.3 }}
+              >
+                <SpotlightCard className="p-5">
+                  <p className="text-xs font-medium uppercase tracking-wider text-text-muted mb-3">
+                    Reseaux sociaux
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    {data.socials.map((social) => (
+                      <a
+                        key={social.platform}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 text-sm rounded-lg bg-zinc-800/50 text-text-muted hover:text-accent hover:bg-zinc-800 transition-all duration-200 cursor-pointer min-h-[44px] flex items-center"
+                        aria-label={social.platform}
+                      >
+                        {social.platform}
+                      </a>
+                    ))}
+                  </div>
+                </SpotlightCard>
+              </motion.div>
+            )}
+          </div>
         </div>
       </div>
     </section>

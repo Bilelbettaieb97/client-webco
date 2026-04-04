@@ -1,7 +1,7 @@
-'use client'
+"use client"
 
-import { useEffect, useRef, useState } from 'react'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { useEffect, useRef, useState } from "react"
+import { motion, useInView, useReducedMotion } from "framer-motion"
 
 interface AnimatedCounterProps {
   value: number
@@ -12,12 +12,12 @@ interface AnimatedCounterProps {
 
 export function AnimatedCounter({
   value,
-  suffix = '',
+  suffix = "",
   label,
   duration = 2,
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-50px' })
+  const isInView = useInView(ref, { once: true, margin: "-50px" })
   const shouldReduce = useReducedMotion()
   const [count, setCount] = useState(0)
 
@@ -43,7 +43,7 @@ export function AnimatedCounter({
   return (
     <motion.div
       ref={ref}
-      className="text-center"
+      className="text-center p-6"
       initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}

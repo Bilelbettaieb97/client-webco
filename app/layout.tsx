@@ -53,7 +53,7 @@ export default function RootLayout({
       lang="fr"
       className={`${spaceGrotesk.variable} ${inter.variable} antialiased`}
     >
-      <body className="min-h-screen bg-bg-primary text-text-primary font-body overflow-x-hidden">
+      <body className="min-h-screen bg-bg text-text font-body overflow-x-hidden">
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-neon-violet focus:text-white focus:rounded-lg"
