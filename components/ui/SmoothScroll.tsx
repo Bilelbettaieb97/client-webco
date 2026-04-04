@@ -1,30 +1,48 @@
 "use client"
-import { useEffect, useRef } from 'react'
-import Lenis from 'lenis'
-import { useReducedMotion } from 'framer-motion'
+
+import { useEffect, useRef } from "react"
+import { useReducedMotion } from "framer-motion"
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null)
   const reducedMotion = useReducedMotion()
+  const lenisRef = useRef<{ destroy: () => void } | null>(null)
+  const rafRef = useRef<number>(0)
 
   useEffect(() => {
     if (reducedMotion) return
 
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 2,
-      infinite: false,
-    })
-    lenisRef.current = lenis
+    let mounted = true
 
-    function raf(time: number) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
+    async function init() {
+      try {
+        const { default: Lenis } = await import("lenis")
+        if (!mounted) return
+
+        const lenis = new Lenis({
+          duration: 1.2,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          touchMultiplier: 2,
+        })
+        lenisRef.current = lenis
+
+        function raf(time: number) {
+          if (!mounted) return
+          lenis.raf(time)
+          rafRef.current = requestAnimationFrame(raf)
+        }
+        rafRef.current = requestAnimationFrame(raf)
+      } catch {
+        // Lenis failed — native scroll works perfectly
+      }
     }
-    requestAnimationFrame(raf)
 
-    return () => { lenis.destroy() }
+    init()
+
+    return () => {
+      mounted = false
+      cancelAnimationFrame(rafRef.current)
+      lenisRef.current?.destroy()
+    }
   }, [reducedMotion])
 
   return <>{children}</>

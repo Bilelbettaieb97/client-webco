@@ -16,7 +16,6 @@ const FRAGMENT_SHADER = `
   uniform vec2 u_resolution;
   uniform vec2 u_mouse;
 
-  // Simplex-like noise
   vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
   vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
   vec3 permute(vec3 x) { return mod289(((x * 34.0) + 1.0) * x); }
@@ -49,43 +48,22 @@ const FRAGMENT_SHADER = `
     vec2 uv = gl_FragCoord.xy / u_resolution;
     vec2 mouse = u_mouse;
     float t = u_time * 0.15;
-
-    // Multi-layered noise for organic shapes
     float n1 = snoise(uv * 2.0 + t * 0.5 + mouse * 0.3);
     float n2 = snoise(uv * 3.0 - t * 0.3 + vec2(5.0, 3.0));
     float n3 = snoise(uv * 1.5 + t * 0.2 + mouse * 0.2 + vec2(10.0, 7.0));
-
     float combined = n1 * 0.5 + n2 * 0.3 + n3 * 0.2;
-
-    // Brand colors: violet, blue, cyan
-    vec3 violet = vec3(0.545, 0.361, 0.965);  // #8b5cf6
-    vec3 blue = vec3(0.231, 0.510, 0.965);    // #3b82f6
-    vec3 cyan = vec3(0.024, 0.714, 0.831);    // #06b6d4
-
-    // Blend colors based on noise
+    vec3 violet = vec3(0.545, 0.361, 0.965);
+    vec3 blue = vec3(0.231, 0.510, 0.965);
+    vec3 cyan = vec3(0.024, 0.714, 0.831);
     vec3 color = mix(violet, blue, smoothstep(-0.3, 0.3, n1));
     color = mix(color, cyan, smoothstep(-0.2, 0.5, n2));
-
-    // Mouse influence — brighter near cursor
     float mouseDist = distance(uv, mouse);
     float mouseInfluence = smoothstep(0.5, 0.0, mouseDist) * 0.15;
-
     float alpha = (0.12 + combined * 0.06 + mouseInfluence);
     alpha = clamp(alpha, 0.0, 0.25);
-
     gl_FragColor = vec4(color, alpha);
   }
 `
-
-const STATIC_FALLBACK = (
-  <div
-    className="absolute inset-0 pointer-events-none"
-    style={{
-      background:
-        "radial-gradient(ellipse at 30% 50%, rgba(139,92,246,0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 50%, rgba(59,130,246,0.08) 0%, transparent 50%)",
-    }}
-  />
-)
 
 export function FluidBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -93,7 +71,8 @@ export function FluidBackground() {
   const mouseRef = useRef({ x: 0.5, y: 0.5 })
   const rafRef = useRef<number>(0)
   const startTimeRef = useRef(0)
-  const [webglFailed, setWebglFailed] = useState(false)
+  const firstFrameRef = useRef(false)
+  const [ready, setReady] = useState(false)
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     const canvas = canvasRef.current
@@ -108,6 +87,8 @@ export function FluidBackground() {
   useEffect(() => {
     if (shouldReduce) return
 
+    let mounted = true
+
     try {
       const canvas = canvasRef.current
       if (!canvas) return
@@ -117,17 +98,9 @@ export function FluidBackground() {
         premultipliedAlpha: false,
         antialias: false,
       })
-      if (!gl) {
-        setWebglFailed(true)
-        return
-      }
+      if (!gl) return // No WebGL = canvas stays opacity:0 = parent gradient visible
 
-      // Compile shader
-      function createShader(
-        glCtx: WebGLRenderingContext,
-        type: number,
-        source: string
-      ): WebGLShader | null {
+      function createShader(glCtx: WebGLRenderingContext, type: number, source: string): WebGLShader | null {
         const shader = glCtx.createShader(type)
         if (!shader) return null
         glCtx.shaderSource(shader, source)
@@ -141,35 +114,20 @@ export function FluidBackground() {
 
       const vs = createShader(gl, gl.VERTEX_SHADER, VERTEX_SHADER)
       const fs = createShader(gl, gl.FRAGMENT_SHADER, FRAGMENT_SHADER)
-      if (!vs || !fs) {
-        setWebglFailed(true)
-        return
-      }
+      if (!vs || !fs) return
 
       const program = gl.createProgram()
-      if (!program) {
-        setWebglFailed(true)
-        return
-      }
+      if (!program) return
       gl.attachShader(program, vs)
       gl.attachShader(program, fs)
       gl.linkProgram(program)
-      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        setWebglFailed(true)
-        return
-      }
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return
 
       gl.useProgram(program)
 
-      // Fullscreen quad
       const posBuffer = gl.createBuffer()
       gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer)
-      gl.bufferData(
-        gl.ARRAY_BUFFER,
-        new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
-        gl.STATIC_DRAW
-      )
-
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW)
       const posLoc = gl.getAttribLocation(program, "a_position")
       gl.enableVertexAttribArray(posLoc)
       gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0)
@@ -178,55 +136,50 @@ export function FluidBackground() {
       const uResolution = gl.getUniformLocation(program, "u_resolution")
       const uMouse = gl.getUniformLocation(program, "u_mouse")
 
-      // Enable blending for transparency
       gl.enable(gl.BLEND)
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 
-      // Resize handler
       const resize = () => {
         try {
           const dpr = Math.min(window.devicePixelRatio, 1.5)
-          const w = canvas.clientWidth
-          const h = canvas.clientHeight
-          canvas.width = w * dpr
-          canvas.height = h * dpr
+          canvas.width = canvas.clientWidth * dpr
+          canvas.height = canvas.clientHeight * dpr
           gl.viewport(0, 0, canvas.width, canvas.height)
-        } catch {
-          // Ignore resize errors
-        }
+        } catch { /* ignore */ }
       }
       resize()
-
       const ro = new ResizeObserver(resize)
       ro.observe(canvas)
 
       startTimeRef.current = performance.now()
 
-      // Animation loop
+      const c = canvas // local const for TypeScript closure
       function render() {
+        if (!mounted || !gl || !program || !c) return
         try {
-          if (!gl || !program) return
           const time = (performance.now() - startTimeRef.current) / 1000
-
           gl.clearColor(0, 0, 0, 0)
           gl.clear(gl.COLOR_BUFFER_BIT)
-
           gl.useProgram(program)
           gl.uniform1f(uTime, time)
-          gl.uniform2f(uResolution, canvas!.width, canvas!.height)
+          gl.uniform2f(uResolution, c.width, c.height)
           gl.uniform2f(uMouse, mouseRef.current.x, mouseRef.current.y)
-
           gl.drawArrays(gl.TRIANGLES, 0, 6)
+
+          // After first successful frame → fade in the canvas
+          if (!firstFrameRef.current && mounted) {
+            firstFrameRef.current = true
+            setReady(true)
+          }
+
           rafRef.current = requestAnimationFrame(render)
         } catch {
-          // WebGL context lost or error — stop rendering silently
-          setWebglFailed(true)
+          // WebGL error — stop rendering, canvas stays transparent
         }
       }
 
       rafRef.current = requestAnimationFrame(render)
 
-      // Throttled mouse listener
       let lastMouseUpdate = 0
       const throttledMouseMove = (e: MouseEvent) => {
         const now = performance.now()
@@ -237,34 +190,26 @@ export function FluidBackground() {
       window.addEventListener("mousemove", throttledMouseMove, { passive: true })
 
       return () => {
+        mounted = false
         cancelAnimationFrame(rafRef.current)
         window.removeEventListener("mousemove", throttledMouseMove)
         ro.disconnect()
-        try {
-          gl.deleteProgram(program)
-          gl.deleteShader(vs)
-          gl.deleteShader(fs)
-          gl.deleteBuffer(posBuffer)
-        } catch {
-          // Ignore cleanup errors
-        }
+        try { gl.deleteProgram(program); gl.deleteShader(vs); gl.deleteShader(fs); gl.deleteBuffer(posBuffer) } catch { /* ignore */ }
       }
     } catch {
-      setWebglFailed(true)
+      // WebGL completely failed — canvas stays at opacity: 0
       return
     }
   }, [shouldReduce, handleMouseMove])
 
-  // Reduced motion or WebGL failure: static gradient fallback
-  if (shouldReduce || webglFailed) {
-    return STATIC_FALLBACK
-  }
+  // Reduced motion: render nothing (parent has static gradient)
+  if (shouldReduce) return null
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ opacity: 1 }}
+      className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-1000"
+      style={{ opacity: ready ? 1 : 0 }}
       aria-hidden="true"
     />
   )

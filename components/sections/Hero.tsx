@@ -1,10 +1,26 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import { motion, useReducedMotion } from "framer-motion"
 import { Star } from "lucide-react"
 import { AnimatedPaths } from "@/components/ui/AnimatedPaths"
 import { BrowserMockup } from "@/components/ui/BrowserMockup"
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary"
 import type { HeroContent } from "@/lib/types"
+
+// Dynamic imports — ssr:false for Canvas/WebGL components
+const FluidBackground = dynamic(
+  () => import("@/components/ui/FluidBackground").then((m) => ({ default: m.FluidBackground })),
+  { ssr: false }
+)
+const ParticleText = dynamic(
+  () => import("@/components/ui/ParticleText").then((m) => ({ default: m.ParticleText })),
+  { ssr: false }
+)
+const LivePageDemo = dynamic(
+  () => import("@/components/ui/LivePageDemo").then((m) => ({ default: m.LivePageDemo })),
+  { ssr: false }
+)
 
 interface HeroProps {
   data: HeroContent
@@ -12,7 +28,6 @@ interface HeroProps {
 
 export function Hero({ data }: HeroProps) {
   const shouldReduce = useReducedMotion()
-
   const title = data.title || "Multipliez vos conversions B2B par 3 en 30 jours"
 
   return (
@@ -21,7 +36,7 @@ export function Hero({ data }: HeroProps) {
       className="relative min-h-screen overflow-hidden bg-bg"
       aria-label="Accueil"
     >
-      {/* Static gradient background — always visible */}
+      {/* LAYER 0: Static gradient — ALWAYS visible, no JS needed */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -30,17 +45,24 @@ export function Hero({ data }: HeroProps) {
         }}
       />
 
-      {/* Animated Background Paths */}
-      <div className="absolute inset-0 z-0">
+      {/* LAYER 1: FluidBackground — fades in over the gradient when WebGL ready */}
+      <div className="absolute inset-0 z-[1]">
+        <ErrorBoundary>
+          <FluidBackground />
+        </ErrorBoundary>
+      </div>
+
+      {/* LAYER 2: AnimatedPaths (pure SVG, safe) */}
+      <div className="absolute inset-0 z-[2]">
         <AnimatedPaths />
       </div>
 
-      {/* Content — NO framer-motion initial:opacity:0, everything visible immediately */}
+      {/* LAYER 3: Content — visible IMMEDIATELY, no opacity:0 */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40">
         <div className="text-center max-w-4xl mx-auto">
-          {/* Badge */}
+          {/* Badge — only this has a subtle entrance animation */}
           <motion.div
-            initial={shouldReduce ? {} : { opacity: 0, y: 10 }}
+            initial={shouldReduce ? {} : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
@@ -50,25 +72,33 @@ export function Hero({ data }: HeroProps) {
             </span>
           </motion.div>
 
-          {/* Big multiplier — static, always visible */}
+          {/* ParticleText x3.2 — static text always visible, canvas fades in on top */}
           <div className="mt-6">
-            <span className="text-6xl sm:text-7xl md:text-8xl font-mono font-black text-gradient leading-none select-none">
-              x3.2
-            </span>
+            <ErrorBoundary
+              fallback={
+                <div className="flex items-center justify-center" style={{ height: 180 }}>
+                  <span className="text-6xl sm:text-7xl md:text-8xl font-mono font-black text-gradient leading-none select-none">
+                    x3.2
+                  </span>
+                </div>
+              }
+            >
+              <ParticleText text="x3.2" />
+            </ErrorBoundary>
           </div>
 
-          {/* Title */}
+          {/* Title — visible immediately, no opacity animation */}
           <h1 className="mt-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.1] tracking-tight text-gradient">
             {title}
           </h1>
 
-          {/* Subtitle */}
+          {/* Subtitle — visible immediately */}
           <p className="mt-6 text-base sm:text-lg md:text-xl text-text-muted max-w-2xl mx-auto leading-relaxed">
             {data.subtitle ||
               "Nos landing pages génèrent en moyenne x3.2 de conversions pour les entreprises B2B. Design stratégique, copywriting data-driven, A/B testing inclus."}
           </p>
 
-          {/* CTAs */}
+          {/* CTAs — visible immediately */}
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href="#contact"
@@ -87,57 +117,42 @@ export function Hero({ data }: HeroProps) {
             </a>
           </div>
 
-          {/* Micro-proof */}
+          {/* Micro-proof — visible immediately */}
           <div className="mt-8 flex flex-col items-center gap-2">
             <div className="flex items-center gap-1.5 flex-wrap justify-center">
               {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  size={16}
-                  className="fill-yellow-400 text-yellow-400"
-                />
+                <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
               ))}
-              <span className="ml-2 text-sm font-medium text-text stat-number">
-                4.9/5
-              </span>
-              <span className="text-sm text-text-muted">
-                — Noté par +50 directeurs marketing B2B
-              </span>
+              <span className="ml-2 text-sm font-medium text-text stat-number">4.9/5</span>
+              <span className="text-sm text-text-muted">— Noté par +50 directeurs marketing B2B</span>
             </div>
             <p className="text-xs text-text-muted/70">
-              Déjà adopté par DataFlow, PaySecure, CloudOps et{" "}
-              <span className="stat-number">200+</span> entreprises B2B
+              Déjà adopté par DataFlow, PaySecure, CloudOps et <span className="stat-number">200+</span> entreprises B2B
             </p>
           </div>
         </div>
 
-        {/* Browser mockup with fake landing page */}
-        <div className="mt-16 sm:mt-20 max-w-4xl mx-auto">
-          <BrowserMockup url="votre-landing-page.com">
-            <div className="p-6 sm:p-8 min-h-[300px] bg-[#09090b] relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.06)_0%,transparent_60%)]" />
-              <div className="relative z-10 space-y-4">
-                <div className="h-2.5 w-24 bg-zinc-800 rounded" />
-                <div className="h-7 w-3/4 bg-gradient-to-r from-accent/40 to-accent-blue/40 rounded" />
-                <div className="h-7 w-1/2 bg-gradient-to-r from-accent/30 to-accent-blue/30 rounded" />
-                <div className="h-3 w-full bg-zinc-800/60 rounded mt-4" />
-                <div className="h-3 w-5/6 bg-zinc-800/40 rounded" />
-                <div className="flex items-center gap-2 mt-4">
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className="w-3 h-3 rounded-full bg-yellow-400/50" />
-                  ))}
-                  <span className="text-[10px] text-zinc-500">200+ clients</span>
+        {/* LivePageDemo — replaces static mockup, with static fallback */}
+        <div className="mt-16 sm:mt-20 max-w-5xl mx-auto">
+          <ErrorBoundary
+            fallback={
+              <BrowserMockup url="votre-landing-page.com">
+                <div className="p-6 sm:p-8 min-h-[300px] bg-[#09090b] relative overflow-hidden">
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.06)_0%,transparent_60%)]" />
+                  <div className="relative z-10 space-y-4">
+                    <div className="h-2.5 w-24 bg-zinc-800 rounded" />
+                    <div className="h-7 w-3/4 bg-gradient-to-r from-accent/40 to-accent-blue/40 rounded" />
+                    <div className="h-7 w-1/2 bg-gradient-to-r from-accent/30 to-accent-blue/30 rounded" />
+                    <div className="h-3 w-full bg-zinc-800/60 rounded mt-4" />
+                    <div className="h-3 w-5/6 bg-zinc-800/40 rounded" />
+                    <div className="mt-4 h-10 w-48 bg-gradient-to-r from-accent to-accent-blue rounded-lg" />
+                  </div>
                 </div>
-                <div className="mt-4 h-10 w-48 bg-gradient-to-r from-accent to-accent-blue rounded-lg" />
-                <div className="flex items-center gap-2 mt-3">
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] text-green-400 bg-green-400/10 border border-green-400/20 rounded-full">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                    Taux de conversion: 7.8%
-                  </span>
-                </div>
-              </div>
-            </div>
-          </BrowserMockup>
+              </BrowserMockup>
+            }
+          >
+            <LivePageDemo />
+          </ErrorBoundary>
         </div>
       </div>
 

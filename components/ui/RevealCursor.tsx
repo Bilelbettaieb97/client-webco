@@ -84,7 +84,7 @@ export function RevealCursor({
 
       {/* Hint text */}
       {!isHovering && (
-        <p className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-text-muted/60 whitespace-nowrap z-20">
+        <p className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-text-muted/60 whitespace-nowrap z-20 pointer-events-none">
           {hint}
         </p>
       )}

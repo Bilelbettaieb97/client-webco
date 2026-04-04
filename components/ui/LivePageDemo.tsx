@@ -36,17 +36,21 @@ export function LivePageDemo() {
     let cycleInterval: ReturnType<typeof setInterval> | null = null
 
     function runCycle() {
-      if (!mountedRef.current) return
-      setStep(0)
-      setTypedText("")
-      setConversionCount(0)
+      try {
+        if (!mountedRef.current) return
+        setStep(0)
+        setTypedText("")
+        setConversionCount(0)
 
-      timings.forEach((delay, i) => {
-        const t = setTimeout(() => {
-          if (mountedRef.current) setStep(i)
-        }, delay)
-        timeouts.push(t)
-      })
+        timings.forEach((delay, i) => {
+          const t = setTimeout(() => {
+            if (mountedRef.current) setStep(i)
+          }, delay)
+          timeouts.push(t)
+        })
+      } catch {
+        // Cycle failed — stop silently
+      }
     }
 
     runCycle()
