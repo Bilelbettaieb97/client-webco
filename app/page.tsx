@@ -3,9 +3,11 @@ import { Navbar } from "@/components/layout/Navbar"
 import { Hero } from "@/components/sections/Hero"
 import { LogoBar } from "@/components/sections/LogoBar"
 import { Problem } from "@/components/sections/Problem"
+import { CROPlayground } from "@/components/sections/CROPlayground"
 import { Process } from "@/components/sections/Process"
 import { Results } from "@/components/sections/Results"
 import { ROISection } from "@/components/sections/ROISection"
+import { LiveABTest } from "@/components/sections/LiveABTest"
 import { Services } from "@/components/sections/Services"
 import { Portfolio } from "@/components/sections/Portfolio"
 import { Pricing } from "@/components/sections/Pricing"
@@ -30,9 +32,11 @@ export default async function HomePage() {
         <div className="section-divider" />
         <LogoBar />
         <Problem data={data.about} />
+        <CROPlayground />
         <Results data={data.results} />
         <div className="section-divider" />
         <ROISection />
+        <LiveABTest />
         <Process data={data.process} />
         <Portfolio data={data.portfolio} />
         <Services data={data.services} />

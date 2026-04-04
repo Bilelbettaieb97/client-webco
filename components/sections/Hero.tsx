@@ -7,6 +7,8 @@ import { LivePageDemo } from "@/components/ui/LivePageDemo"
 import { TextReveal } from "@/components/ui/TextReveal"
 import { MagneticButton } from "@/components/ui/MagneticButton"
 import { ParallaxSection } from "@/components/ui/ParallaxSection"
+import { FluidBackground } from "@/components/ui/FluidBackground"
+import { ParticleText } from "@/components/ui/ParticleText"
 import { useRef, useEffect, useState, type MouseEvent as ReactMouseEvent } from "react"
 import type { HeroContent } from "@/lib/types"
 
@@ -57,6 +59,11 @@ export function Hero({ data }: HeroProps) {
       aria-label="Accueil"
       onMouseMove={handleMouseMove}
     >
+      {/* WebGL Fluid Background — bottommost layer */}
+      <div className="absolute inset-0 z-0">
+        <FluidBackground />
+      </div>
+
       {/* Animated Background Paths — parallax slower */}
       <ParallaxSection speed={-0.15} className="absolute inset-0 z-0">
         <AnimatedPaths />
@@ -93,8 +100,18 @@ export function Hero({ data }: HeroProps) {
             </span>
           </motion.div>
 
+          {/* Particle morphing multiplier — WOW first impression */}
+          <motion.div
+            className="mt-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <ParticleText text="x3.2" className="mx-auto" />
+          </motion.div>
+
           {/* Title -- cinematic text reveal */}
-          <h1 className="mt-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.1] tracking-tight">
+          <h1 className="mt-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.1] tracking-tight">
             <TextReveal text={title} className="text-gradient" />
           </h1>
 

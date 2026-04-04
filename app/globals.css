@@ -385,6 +385,21 @@ input[type="range"]::-moz-range-thumb {
   to { transform: translateY(0); }
 }
 
+/* ── Reveal cursor glow ─────────────────────────── */
+.reveal-glow {
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.1);
+}
+
+/* ── CRO Playground toggle transition ────────────── */
+.cro-toggle-enter {
+  animation: cro-fade-in 0.3s ease-out forwards;
+}
+
+@keyframes cro-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* ── Reduced motion ────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
