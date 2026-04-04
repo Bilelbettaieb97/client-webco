@@ -41,7 +41,7 @@ export function Services({ data }: ServicesProps) {
 
         <RevealCursor
           revealContent={
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto h-full">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto h-full pointer-events-none">
               {services.map((_, index) => {
                 const insightData = [
                   { roi: "+340%", time: "5 jours", satisfaction: "98%" },

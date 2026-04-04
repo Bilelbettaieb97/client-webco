@@ -72,7 +72,6 @@ export function Navbar() {
                 </a>
               ))}
               <MagneticButton
-                as="a"
                 href="#contact"
                 className="px-5 py-2.5 text-sm font-medium rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white hover:opacity-90 transition-opacity cursor-pointer min-h-[44px] flex items-center gap-2"
               >

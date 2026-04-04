@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useCallback } from "react"
+import { useEffect, useRef, useCallback, useState } from "react"
 import { useReducedMotion } from "framer-motion"
 
 const VERTEX_SHADER = `
@@ -77,12 +77,23 @@ const FRAGMENT_SHADER = `
   }
 `
 
+const STATIC_FALLBACK = (
+  <div
+    className="absolute inset-0 pointer-events-none"
+    style={{
+      background:
+        "radial-gradient(ellipse at 30% 50%, rgba(139,92,246,0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 50%, rgba(59,130,246,0.08) 0%, transparent 50%)",
+    }}
+  />
+)
+
 export function FluidBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const shouldReduce = useReducedMotion()
   const mouseRef = useRef({ x: 0.5, y: 0.5 })
   const rafRef = useRef<number>(0)
   const startTimeRef = useRef(0)
+  const [webglFailed, setWebglFailed] = useState(false)
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     const canvas = canvasRef.current
@@ -97,134 +108,156 @@ export function FluidBackground() {
   useEffect(() => {
     if (shouldReduce) return
 
-    const canvas = canvasRef.current
-    if (!canvas) return
+    try {
+      const canvas = canvasRef.current
+      if (!canvas) return
 
-    const gl = canvas.getContext("webgl", {
-      alpha: true,
-      premultipliedAlpha: false,
-      antialias: false,
-    })
-    if (!gl) return
-
-    // Compile shader
-    function createShader(
-      glCtx: WebGLRenderingContext,
-      type: number,
-      source: string
-    ): WebGLShader | null {
-      const shader = glCtx.createShader(type)
-      if (!shader) return null
-      glCtx.shaderSource(shader, source)
-      glCtx.compileShader(shader)
-      if (!glCtx.getShaderParameter(shader, glCtx.COMPILE_STATUS)) {
-        glCtx.deleteShader(shader)
-        return null
+      const gl = canvas.getContext("webgl", {
+        alpha: true,
+        premultipliedAlpha: false,
+        antialias: false,
+      })
+      if (!gl) {
+        setWebglFailed(true)
+        return
       }
-      return shader
-    }
 
-    const vs = createShader(gl, gl.VERTEX_SHADER, VERTEX_SHADER)
-    const fs = createShader(gl, gl.FRAGMENT_SHADER, FRAGMENT_SHADER)
-    if (!vs || !fs) return
+      // Compile shader
+      function createShader(
+        glCtx: WebGLRenderingContext,
+        type: number,
+        source: string
+      ): WebGLShader | null {
+        const shader = glCtx.createShader(type)
+        if (!shader) return null
+        glCtx.shaderSource(shader, source)
+        glCtx.compileShader(shader)
+        if (!glCtx.getShaderParameter(shader, glCtx.COMPILE_STATUS)) {
+          glCtx.deleteShader(shader)
+          return null
+        }
+        return shader
+      }
 
-    const program = gl.createProgram()
-    if (!program) return
-    gl.attachShader(program, vs)
-    gl.attachShader(program, fs)
-    gl.linkProgram(program)
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return
+      const vs = createShader(gl, gl.VERTEX_SHADER, VERTEX_SHADER)
+      const fs = createShader(gl, gl.FRAGMENT_SHADER, FRAGMENT_SHADER)
+      if (!vs || !fs) {
+        setWebglFailed(true)
+        return
+      }
 
-    gl.useProgram(program)
-
-    // Fullscreen quad
-    const posBuffer = gl.createBuffer()
-    gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer)
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
-      gl.STATIC_DRAW
-    )
-
-    const posLoc = gl.getAttribLocation(program, "a_position")
-    gl.enableVertexAttribArray(posLoc)
-    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0)
-
-    const uTime = gl.getUniformLocation(program, "u_time")
-    const uResolution = gl.getUniformLocation(program, "u_resolution")
-    const uMouse = gl.getUniformLocation(program, "u_mouse")
-
-    // Enable blending for transparency
-    gl.enable(gl.BLEND)
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
-
-    // Resize handler
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio, 1.5)
-      const w = canvas.clientWidth
-      const h = canvas.clientHeight
-      canvas.width = w * dpr
-      canvas.height = h * dpr
-      gl.viewport(0, 0, canvas.width, canvas.height)
-    }
-    resize()
-
-    const ro = new ResizeObserver(resize)
-    ro.observe(canvas)
-
-    startTimeRef.current = performance.now()
-
-    // Animation loop
-    function render() {
-      if (!gl || !program) return
-      const time = (performance.now() - startTimeRef.current) / 1000
-
-      gl.clearColor(0, 0, 0, 0)
-      gl.clear(gl.COLOR_BUFFER_BIT)
+      const program = gl.createProgram()
+      if (!program) {
+        setWebglFailed(true)
+        return
+      }
+      gl.attachShader(program, vs)
+      gl.attachShader(program, fs)
+      gl.linkProgram(program)
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        setWebglFailed(true)
+        return
+      }
 
       gl.useProgram(program)
-      gl.uniform1f(uTime, time)
-      gl.uniform2f(uResolution, canvas!.width, canvas!.height)
-      gl.uniform2f(uMouse, mouseRef.current.x, mouseRef.current.y)
 
-      gl.drawArrays(gl.TRIANGLES, 0, 6)
+      // Fullscreen quad
+      const posBuffer = gl.createBuffer()
+      gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer)
+      gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
+        gl.STATIC_DRAW
+      )
+
+      const posLoc = gl.getAttribLocation(program, "a_position")
+      gl.enableVertexAttribArray(posLoc)
+      gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0)
+
+      const uTime = gl.getUniformLocation(program, "u_time")
+      const uResolution = gl.getUniformLocation(program, "u_resolution")
+      const uMouse = gl.getUniformLocation(program, "u_mouse")
+
+      // Enable blending for transparency
+      gl.enable(gl.BLEND)
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+
+      // Resize handler
+      const resize = () => {
+        try {
+          const dpr = Math.min(window.devicePixelRatio, 1.5)
+          const w = canvas.clientWidth
+          const h = canvas.clientHeight
+          canvas.width = w * dpr
+          canvas.height = h * dpr
+          gl.viewport(0, 0, canvas.width, canvas.height)
+        } catch {
+          // Ignore resize errors
+        }
+      }
+      resize()
+
+      const ro = new ResizeObserver(resize)
+      ro.observe(canvas)
+
+      startTimeRef.current = performance.now()
+
+      // Animation loop
+      function render() {
+        try {
+          if (!gl || !program) return
+          const time = (performance.now() - startTimeRef.current) / 1000
+
+          gl.clearColor(0, 0, 0, 0)
+          gl.clear(gl.COLOR_BUFFER_BIT)
+
+          gl.useProgram(program)
+          gl.uniform1f(uTime, time)
+          gl.uniform2f(uResolution, canvas!.width, canvas!.height)
+          gl.uniform2f(uMouse, mouseRef.current.x, mouseRef.current.y)
+
+          gl.drawArrays(gl.TRIANGLES, 0, 6)
+          rafRef.current = requestAnimationFrame(render)
+        } catch {
+          // WebGL context lost or error — stop rendering silently
+          setWebglFailed(true)
+        }
+      }
+
       rafRef.current = requestAnimationFrame(render)
-    }
 
-    rafRef.current = requestAnimationFrame(render)
+      // Throttled mouse listener
+      let lastMouseUpdate = 0
+      const throttledMouseMove = (e: MouseEvent) => {
+        const now = performance.now()
+        if (now - lastMouseUpdate < 16) return
+        lastMouseUpdate = now
+        handleMouseMove(e)
+      }
+      window.addEventListener("mousemove", throttledMouseMove, { passive: true })
 
-    // Throttled mouse listener
-    let lastMouseUpdate = 0
-    const throttledMouseMove = (e: MouseEvent) => {
-      const now = performance.now()
-      if (now - lastMouseUpdate < 16) return
-      lastMouseUpdate = now
-      handleMouseMove(e)
-    }
-    window.addEventListener("mousemove", throttledMouseMove, { passive: true })
-
-    return () => {
-      cancelAnimationFrame(rafRef.current)
-      window.removeEventListener("mousemove", throttledMouseMove)
-      ro.disconnect()
-      gl.deleteProgram(program)
-      gl.deleteShader(vs)
-      gl.deleteShader(fs)
-      gl.deleteBuffer(posBuffer)
+      return () => {
+        cancelAnimationFrame(rafRef.current)
+        window.removeEventListener("mousemove", throttledMouseMove)
+        ro.disconnect()
+        try {
+          gl.deleteProgram(program)
+          gl.deleteShader(vs)
+          gl.deleteShader(fs)
+          gl.deleteBuffer(posBuffer)
+        } catch {
+          // Ignore cleanup errors
+        }
+      }
+    } catch {
+      setWebglFailed(true)
+      return
     }
   }, [shouldReduce, handleMouseMove])
 
-  // Reduced motion: static gradient fallback
-  if (shouldReduce) {
-    return (
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at 30% 50%, rgba(139,92,246,0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 50%, rgba(59,130,246,0.08) 0%, transparent 50%)",
-        }}
-      />
-    )
+  // Reduced motion or WebGL failure: static gradient fallback
+  if (shouldReduce || webglFailed) {
+    return STATIC_FALLBACK
   }
 
   return (

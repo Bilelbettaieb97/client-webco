@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import { BrowserMockup } from "./BrowserMockup"
 
 const CYCLE_DURATION = 12000 // 12 seconds total
@@ -11,8 +11,16 @@ export function LivePageDemo() {
   const [step, setStep] = useState(0)
   const [typedText, setTypedText] = useState("")
   const [conversionCount, setConversionCount] = useState(0)
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const mountedRef = useRef(true)
   const headline = "Multipliez vos leads par 3"
+
+  // Track mounted state
+  useEffect(() => {
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
+    }
+  }, [])
 
   useEffect(() => {
     if (shouldReduce) {
@@ -25,24 +33,28 @@ export function LivePageDemo() {
     // Step progression
     const timings = [0, 800, 1500, 4200, 5200, 6200, 7500, 9000]
     const timeouts: ReturnType<typeof setTimeout>[] = []
+    let cycleInterval: ReturnType<typeof setInterval> | null = null
 
     function runCycle() {
+      if (!mountedRef.current) return
       setStep(0)
       setTypedText("")
       setConversionCount(0)
 
       timings.forEach((delay, i) => {
-        const t = setTimeout(() => setStep(i), delay)
+        const t = setTimeout(() => {
+          if (mountedRef.current) setStep(i)
+        }, delay)
         timeouts.push(t)
       })
     }
 
     runCycle()
-    intervalRef.current = setInterval(runCycle, CYCLE_DURATION)
+    cycleInterval = setInterval(runCycle, CYCLE_DURATION)
 
     return () => {
       timeouts.forEach(clearTimeout)
-      if (intervalRef.current) clearInterval(intervalRef.current)
+      if (cycleInterval) clearInterval(cycleInterval)
     }
   }, [shouldReduce])
 
@@ -57,6 +69,10 @@ export function LivePageDemo() {
       let index = 0
       setTypedText("")
       const typeInterval = setInterval(() => {
+        if (!mountedRef.current) {
+          clearInterval(typeInterval)
+          return
+        }
         if (index < headline.length) {
           setTypedText(headline.substring(0, index + 1))
           index++
@@ -74,6 +90,10 @@ export function LivePageDemo() {
     if (step === 7) {
       let count = 0
       const countInterval = setInterval(() => {
+        if (!mountedRef.current) {
+          clearInterval(countInterval)
+          return
+        }
         count += 2
         if (count >= 78) {
           setConversionCount(78)
@@ -92,7 +112,7 @@ export function LivePageDemo() {
         {/* Subtle background gradient */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.06)_0%,transparent_60%)]" />
 
-        {/* ─── Step 1: Navbar slides down ─── */}
+        {/* --- Step 1: Navbar slides down --- */}
         <motion.div
           className="relative z-10 flex items-center justify-between mb-4 sm:mb-6"
           initial={{ y: -30, opacity: 0 }}
@@ -108,7 +128,7 @@ export function LivePageDemo() {
           </div>
         </motion.div>
 
-        {/* ─── Step 2: Hero headline types in ─── */}
+        {/* --- Step 2: Hero headline types in --- */}
         <div className="relative z-10 mt-2 sm:mt-4 md:mt-6">
           <motion.div
             initial={{ opacity: 0 }}
@@ -132,7 +152,7 @@ export function LivePageDemo() {
           </motion.div>
         </div>
 
-        {/* ─── Step 3: CTA button scales in ─── */}
+        {/* --- Step 3: CTA button scales in --- */}
         <motion.div
           className="relative z-10 mt-3 sm:mt-5"
           initial={{ scale: 0, opacity: 0 }}
@@ -147,7 +167,7 @@ export function LivePageDemo() {
           </div>
         </motion.div>
 
-        {/* ─── Step 4: Logo bar fades in ─── */}
+        {/* --- Step 4: Logo bar fades in --- */}
         <motion.div
           className="relative z-10 mt-4 sm:mt-6 flex items-center gap-3 sm:gap-6"
           initial={{ opacity: 0, y: 10 }}
@@ -167,7 +187,7 @@ export function LivePageDemo() {
           ))}
         </motion.div>
 
-        {/* ─── Step 5: Stats count up ─── */}
+        {/* --- Step 5: Stats count up --- */}
         <motion.div
           className="relative z-10 mt-4 sm:mt-6 grid grid-cols-3 gap-2 sm:gap-4 max-w-xs sm:max-w-md"
           initial={{ opacity: 0, y: 15 }}
@@ -188,7 +208,7 @@ export function LivePageDemo() {
           ))}
         </motion.div>
 
-        {/* ─── Step 6: Testimonial card slides in ─── */}
+        {/* --- Step 6: Testimonial card slides in --- */}
         <motion.div
           className="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 z-10"
           initial={{ x: 100, opacity: 0 }}
@@ -210,7 +230,7 @@ export function LivePageDemo() {
           </div>
         </motion.div>
 
-        {/* ─── Step 7: Conversion rate badge pulses ─── */}
+        {/* --- Step 7: Conversion rate badge pulses --- */}
         <motion.div
           className="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 md:bottom-8 md:left-8 z-10"
           initial={{ scale: 0, opacity: 0 }}

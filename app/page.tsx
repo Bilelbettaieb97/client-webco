@@ -18,6 +18,7 @@ import { CTAFinal } from "@/components/sections/CTAFinal"
 import { Contact } from "@/components/sections/Contact"
 import { Footer } from "@/components/layout/Footer"
 import { StickyCta } from "@/components/ui/StickyCta"
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary"
 
 export const revalidate = 3600
 
@@ -28,15 +29,21 @@ export default async function HomePage() {
     <>
       <Navbar />
       <main id="main-content">
-        <Hero data={data.hero} />
+        <ErrorBoundary>
+          <Hero data={data.hero} />
+        </ErrorBoundary>
         <div className="section-divider" />
         <LogoBar />
         <Problem data={data.about} />
-        <CROPlayground />
+        <ErrorBoundary>
+          <CROPlayground />
+        </ErrorBoundary>
         <Results data={data.results} />
         <div className="section-divider" />
         <ROISection />
-        <LiveABTest />
+        <ErrorBoundary>
+          <LiveABTest />
+        </ErrorBoundary>
         <Process data={data.process} />
         <Portfolio data={data.portfolio} />
         <Services data={data.services} />

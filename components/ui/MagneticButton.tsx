@@ -1,19 +1,17 @@
 "use client"
 import { useRef, useEffect, useState, type MouseEvent, type ReactNode } from 'react'
 import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-motion'
-import { cn } from '@/lib/utils'
 
 interface MagneticButtonProps {
   children: ReactNode
   className?: string
-  as?: 'button' | 'a'
   href?: string
   onClick?: () => void
-  [key: string]: unknown
+  type?: 'button' | 'submit'
 }
 
-export function MagneticButton({ children, className, as = 'button', href, onClick, ...props }: MagneticButtonProps) {
-  const ref = useRef<HTMLElement>(null)
+export function MagneticButton({ children, className, href, onClick, type = 'button' }: MagneticButtonProps) {
+  const ref = useRef<HTMLDivElement>(null)
   const shouldReduce = useReducedMotion()
   const [isTouchDevice, setIsTouchDevice] = useState(false)
   const x = useMotionValue(0)
@@ -39,27 +37,25 @@ export function MagneticButton({ children, className, as = 'button', href, onCli
     y.set(0)
   }
 
-  const Tag = as === 'a' ? motion.a : motion.button
-
+  // No magnetic effect on mobile/reduced motion
   if (shouldReduce || isTouchDevice) {
-    if (as === 'a') {
-      return <a href={href} className={className} onClick={onClick} {...props}>{children}</a>
-    }
-    return <button className={className} onClick={onClick} {...props}>{children}</button>
+    if (href) return <a href={href} className={className} onClick={onClick}>{children}</a>
+    return <button type={type} className={className} onClick={onClick}>{children}</button>
   }
 
+  const inner = href
+    ? <a href={href} className={className} onClick={onClick}>{children}</a>
+    : <button type={type} className={className} onClick={onClick}>{children}</button>
+
   return (
-    <Tag
-      ref={ref as React.Ref<HTMLButtonElement & HTMLAnchorElement>}
+    <motion.div
+      ref={ref}
       onMouseMove={handleMouse}
       onMouseLeave={handleLeave}
       style={{ x: springX, y: springY }}
-      className={cn("transform-gpu", className)}
-      href={as === 'a' ? href : undefined}
-      onClick={onClick}
-      {...props}
+      className="transform-gpu inline-block"
     >
-      {children}
-    </Tag>
+      {inner}
+    </motion.div>
   )
 }

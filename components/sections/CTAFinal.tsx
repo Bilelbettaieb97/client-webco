@@ -38,7 +38,6 @@ export function CTAFinal() {
 
           <div className="mt-8 flex justify-center">
             <MagneticButton
-              as="a"
               href="#contact"
               className="group relative inline-flex items-center px-10 py-4 text-base font-semibold rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-accent/25 cursor-pointer min-h-[44px]"
             >

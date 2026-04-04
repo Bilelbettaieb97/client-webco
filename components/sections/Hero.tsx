@@ -1,5 +1,6 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import { motion, useReducedMotion, useMotionValue, useSpring } from "framer-motion"
 import { Star } from "lucide-react"
 import { AnimatedPaths } from "@/components/ui/AnimatedPaths"
@@ -7,10 +8,18 @@ import { LivePageDemo } from "@/components/ui/LivePageDemo"
 import { TextReveal } from "@/components/ui/TextReveal"
 import { MagneticButton } from "@/components/ui/MagneticButton"
 import { ParallaxSection } from "@/components/ui/ParallaxSection"
-import { FluidBackground } from "@/components/ui/FluidBackground"
-import { ParticleText } from "@/components/ui/ParticleText"
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary"
 import { useRef, useEffect, useState, type MouseEvent as ReactMouseEvent } from "react"
 import type { HeroContent } from "@/lib/types"
+
+const FluidBackground = dynamic(
+  () => import("@/components/ui/FluidBackground").then((m) => ({ default: m.FluidBackground })),
+  { ssr: false }
+)
+const ParticleText = dynamic(
+  () => import("@/components/ui/ParticleText").then((m) => ({ default: m.ParticleText })),
+  { ssr: false }
+)
 
 interface HeroProps {
   data: HeroContent
@@ -61,7 +70,11 @@ export function Hero({ data }: HeroProps) {
     >
       {/* WebGL Fluid Background — bottommost layer */}
       <div className="absolute inset-0 z-0">
-        <FluidBackground />
+        <ErrorBoundary fallback={
+          <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 30% 50%, rgba(139,92,246,0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 50%, rgba(59,130,246,0.08) 0%, transparent 50%)" }} />
+        }>
+          <FluidBackground />
+        </ErrorBoundary>
       </div>
 
       {/* Animated Background Paths — parallax slower */}
@@ -107,7 +120,13 @@ export function Hero({ data }: HeroProps) {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <ParticleText text="x3.2" className="mx-auto" />
+            <ErrorBoundary fallback={
+              <div className="flex items-center justify-center mx-auto">
+                <span className="text-6xl sm:text-7xl md:text-8xl font-mono font-black text-gradient leading-none select-none">x3.2</span>
+              </div>
+            }>
+              <ParticleText text="x3.2" className="mx-auto" />
+            </ErrorBoundary>
           </motion.div>
 
           {/* Title -- cinematic text reveal */}
@@ -134,7 +153,6 @@ export function Hero({ data }: HeroProps) {
             transition={{ duration: 0.6, delay: 1 }}
           >
             <MagneticButton
-              as="a"
               href="#contact"
               className="group relative px-8 py-3.5 text-sm font-semibold rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 cursor-pointer min-h-[44px] flex items-center"
             >
@@ -176,7 +194,9 @@ export function Hero({ data }: HeroProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.4 }}
         >
-          <LivePageDemo />
+          <ErrorBoundary>
+            <LivePageDemo />
+          </ErrorBoundary>
         </motion.div>
       </div>
 
