@@ -1,9 +1,13 @@
 "use client"
 
-import { motion, useReducedMotion } from "framer-motion"
+import { motion, useReducedMotion, useMotionValue, useSpring } from "framer-motion"
 import { Star } from "lucide-react"
 import { AnimatedPaths } from "@/components/ui/AnimatedPaths"
 import { ContainerScroll } from "@/components/ui/ContainerScroll"
+import { TextReveal } from "@/components/ui/TextReveal"
+import { MagneticButton } from "@/components/ui/MagneticButton"
+import { ParallaxSection } from "@/components/ui/ParallaxSection"
+import { useRef, useEffect, useState, type MouseEvent as ReactMouseEvent } from "react"
 import type { HeroContent } from "@/lib/types"
 
 interface HeroProps {
@@ -12,15 +16,64 @@ interface HeroProps {
 
 export function Hero({ data }: HeroProps) {
   const shouldReduce = useReducedMotion()
+  const sectionRef = useRef<HTMLElement>(null)
+  const [isTouchDevice, setIsTouchDevice] = useState(false)
 
-  const titleWords = (data.title || "Multipliez vos conversions B2B par 3 en 30 jours").split(" ")
+  const mouseX = useMotionValue(0.5)
+  const mouseY = useMotionValue(0.5)
+  const orbX = useSpring(mouseX, { stiffness: 50, damping: 30 })
+  const orbY = useSpring(mouseY, { stiffness: 50, damping: 30 })
+  const [orbStyle, setOrbStyle] = useState({ left: '50%', top: '50%' })
 
-  const gradientWords = ["conversions", "b2b", "3", "jours"]
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0)
+  }, [])
+
+  useEffect(() => {
+    if (isTouchDevice || shouldReduce) return
+    const unsubX = orbX.on("change", (x) => {
+      setOrbStyle(prev => ({ ...prev, left: `${x * 100}%` }))
+    })
+    const unsubY = orbY.on("change", (y) => {
+      setOrbStyle(prev => ({ ...prev, top: `${y * 100}%` }))
+    })
+    return () => { unsubX(); unsubY() }
+  }, [orbX, orbY, isTouchDevice, shouldReduce])
+
+  function handleMouseMove(e: ReactMouseEvent) {
+    if (!sectionRef.current || isTouchDevice || shouldReduce) return
+    const rect = sectionRef.current.getBoundingClientRect()
+    mouseX.set((e.clientX - rect.left) / rect.width)
+    mouseY.set((e.clientY - rect.top) / rect.height)
+  }
+
+  const title = data.title || "Multipliez vos conversions B2B par 3 en 30 jours"
 
   return (
-    <section id="hero" className="relative min-h-screen overflow-hidden bg-bg" aria-label="Accueil">
-      {/* Animated Background Paths */}
-      <AnimatedPaths />
+    <section
+      ref={sectionRef}
+      id="hero"
+      className="relative min-h-screen overflow-hidden bg-bg"
+      aria-label="Accueil"
+      onMouseMove={handleMouseMove}
+    >
+      {/* Animated Background Paths — parallax slower */}
+      <ParallaxSection speed={-0.15} className="absolute inset-0 z-0">
+        <AnimatedPaths />
+      </ParallaxSection>
+
+      {/* Gradient orb following mouse */}
+      {!shouldReduce && !isTouchDevice && (
+        <div
+          className="absolute w-[600px] h-[600px] rounded-full pointer-events-none z-0 opacity-20 blur-[120px]"
+          style={{
+            background: 'radial-gradient(circle, rgba(139,92,246,0.4) 0%, rgba(59,130,246,0.2) 50%, transparent 70%)',
+            left: orbStyle.left,
+            top: orbStyle.top,
+            transform: 'translate(-50%, -50%)',
+          }}
+        />
+      )}
 
       {/* Radial gradient overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.08)_0%,transparent_60%)] pointer-events-none" />
@@ -40,32 +93,9 @@ export function Hero({ data }: HeroProps) {
             </span>
           </motion.div>
 
-          {/* Title -- word by word spring animation */}
+          {/* Title -- cinematic text reveal */}
           <h1 className="mt-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-[1.1] tracking-tight">
-            {titleWords.map((word, i) => (
-              <motion.span
-                key={i}
-                className="inline-block mr-[0.25em]"
-                initial={{ opacity: 0, y: shouldReduce ? 0 : 30, filter: "blur(8px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  type: "spring",
-                  damping: 20,
-                  stiffness: 100,
-                  delay: 0.3 + i * 0.08,
-                }}
-              >
-                <span
-                  className={
-                    gradientWords.includes(word.toLowerCase())
-                      ? "text-gradient"
-                      : "text-text"
-                  }
-                >
-                  {word}
-                </span>
-              </motion.span>
-            ))}
+            <TextReveal text={title} className="text-gradient" />
           </h1>
 
           {/* Subtitle */}
@@ -86,13 +116,14 @@ export function Hero({ data }: HeroProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1 }}
           >
-            <a
+            <MagneticButton
+              as="a"
               href="#contact"
               className="group relative px-8 py-3.5 text-sm font-semibold rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 cursor-pointer min-h-[44px] flex items-center"
             >
               <span className="relative z-10">{data.cta_primary || "Obtenir mon audit CRO gratuit"}</span>
               <div className="absolute inset-0 bg-gradient-to-r from-accent-blue to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </a>
+            </MagneticButton>
             <a
               href="#resultats"
               className="px-8 py-3.5 text-sm font-semibold rounded-lg border border-zinc-700 text-text hover:border-accent/50 hover:bg-accent/5 transition-all duration-300 cursor-pointer min-h-[44px] flex items-center"
@@ -112,11 +143,11 @@ export function Hero({ data }: HeroProps) {
               {[...Array(5)].map((_, i) => (
                 <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
               ))}
-              <span className="ml-2 text-sm font-medium text-text">4.9/5</span>
+              <span className="ml-2 text-sm font-medium text-text stat-number">4.9/5</span>
               <span className="text-sm text-text-muted">— Note par +50 directeurs marketing B2B</span>
             </div>
             <p className="text-xs text-text-muted/70">
-              Deja adopte par DataFlow, PaySecure, CloudOps et 200+ entreprises B2B
+              Deja adopte par DataFlow, PaySecure, CloudOps et <span className="stat-number">200+</span> entreprises B2B
             </p>
           </motion.div>
         </div>
@@ -153,6 +184,11 @@ export function Hero({ data }: HeroProps) {
             </div>
           </div>
         </ContainerScroll>
+      </div>
+
+      {/* Animated gradient line divider at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 z-10">
+        <div className="animated-gradient-line w-full" />
       </div>
     </section>
   )

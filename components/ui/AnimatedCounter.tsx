@@ -49,7 +49,7 @@ export function AnimatedCounter({
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <div className="text-4xl sm:text-5xl font-display font-bold text-gradient">
+      <div className="text-4xl sm:text-5xl font-bold text-gradient stat-number">
         {count}
         {suffix}
       </div>

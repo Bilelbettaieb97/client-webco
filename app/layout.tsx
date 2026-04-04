@@ -1,16 +1,23 @@
 import type { Metadata } from 'next'
-import { Space_Grotesk, Inter } from 'next/font/google'
+import { Sora, Inter, JetBrains_Mono } from 'next/font/google'
+import { SmoothScroll } from '@/components/ui/SmoothScroll'
 import './globals.css'
 
-const spaceGrotesk = Space_Grotesk({
+const sora = Sora({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
+  variable: '--font-sora',
   display: 'swap',
 })
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains-mono',
   display: 'swap',
 })
 
@@ -51,16 +58,18 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${spaceGrotesk.variable} ${inter.variable} antialiased`}
+      className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}
     >
-      <body className="min-h-screen bg-bg text-text font-body overflow-x-hidden">
+      <body className="noise-overlay min-h-screen bg-bg text-text font-body overflow-x-hidden">
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-neon-violet focus:text-white focus:rounded-lg"
         >
           Aller au contenu principal
         </a>
-        {children}
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   )

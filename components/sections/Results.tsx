@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion"
 import { ArrowRight, TrendingUp } from "lucide-react"
 import { SectionHeading } from "@/components/ui/SectionHeading"
 import { SpotlightCard } from "@/components/ui/SpotlightCard"
+import { Card3D } from "@/components/ui/Card3D"
 import type { ResultsContent } from "@/lib/types"
 
 interface ResultsProps {
@@ -37,48 +38,50 @@ export function Results({ data }: ResultsProps) {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: index * 0.12 }}
             >
-              <SpotlightCard className="h-full p-6 sm:p-8">
-                {/* Client type badge */}
-                <span className="inline-block px-3 py-1 text-xs font-medium uppercase tracking-wider text-accent border border-accent/30 rounded-full bg-accent/5 mb-6">
-                  {item.client_type}
-                </span>
-
-                {/* Before / After numbers */}
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-2xl sm:text-3xl font-display font-bold text-zinc-500">
-                    {item.before}
+              <Card3D className="h-full">
+                <SpotlightCard className="h-full p-6 sm:p-8">
+                  {/* Client type badge */}
+                  <span className="inline-block px-3 py-1 text-xs font-medium uppercase tracking-wider text-accent border border-accent/30 rounded-full bg-accent/5 mb-6">
+                    {item.client_type}
                   </span>
-                  <ArrowRight size={20} className="text-zinc-600 flex-shrink-0" />
-                  <span className="text-5xl sm:text-6xl font-display font-bold text-gradient-green leading-none">
-                    {item.after}
-                  </span>
-                </div>
 
-                {/* Metric label */}
-                <p className="text-sm text-text-muted mb-4">
-                  {item.metric}
-                </p>
+                  {/* Before / After numbers */}
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-2xl sm:text-3xl font-bold text-zinc-500 stat-number">
+                      {item.before}
+                    </span>
+                    <ArrowRight size={20} className="text-zinc-600 flex-shrink-0" />
+                    <span className="text-5xl sm:text-6xl font-bold text-gradient-green leading-none stat-number">
+                      {item.after}
+                    </span>
+                  </div>
 
-                {/* Description */}
-                <p className="text-sm text-text-muted leading-relaxed mb-4">
-                  {item.description}
-                </p>
-
-                {/* ROI estimate */}
-                <div className="px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/20 mb-4">
-                  <p className="text-xs font-medium text-green-400">
-                    ROI estime : {roiEstimates[index] || "+300% en 90 jours"}
+                  {/* Metric label */}
+                  <p className="text-sm text-text-muted mb-4">
+                    {item.metric}
                   </p>
-                </div>
 
-                {/* Multiplier badge */}
-                <div className="flex items-center gap-2">
-                  <TrendingUp size={16} className="text-green-400" />
-                  <span className="text-sm font-semibold text-green-400">
-                    {item.multiplier}
-                  </span>
-                </div>
-              </SpotlightCard>
+                  {/* Description */}
+                  <p className="text-sm text-text-muted leading-relaxed mb-4">
+                    {item.description}
+                  </p>
+
+                  {/* ROI estimate */}
+                  <div className="px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/20 mb-4">
+                    <p className="text-xs font-medium text-green-400">
+                      ROI estime : <span className="stat-number">{roiEstimates[index] || "+300% en 90 jours"}</span>
+                    </p>
+                  </div>
+
+                  {/* Multiplier badge */}
+                  <div className="flex items-center gap-2">
+                    <TrendingUp size={16} className="text-green-400" />
+                    <span className="text-sm font-semibold text-green-400 stat-number">
+                      {item.multiplier}
+                    </span>
+                  </div>
+                </SpotlightCard>
+              </Card3D>
             </motion.div>
           ))}
         </div>
@@ -99,6 +102,9 @@ export function Results({ data }: ResultsProps) {
             <div className="absolute inset-0 bg-gradient-to-r from-accent-blue to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </a>
         </motion.div>
+
+        {/* Animated gradient line divider at bottom */}
+        <div className="mt-24 animated-gradient-line w-full" />
       </div>
     </section>
   )

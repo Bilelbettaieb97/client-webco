@@ -1,14 +1,18 @@
 "use client"
 
 import { motion, useReducedMotion } from "framer-motion"
+import { MagneticButton } from "@/components/ui/MagneticButton"
+import { ParallaxSection } from "@/components/ui/ParallaxSection"
 
 export function CTAFinal() {
   const shouldReduce = useReducedMotion()
 
   return (
     <section className="relative py-24 sm:py-32 overflow-hidden" aria-label="Appel a l'action">
-      {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-accent-blue/5 to-transparent" />
+      {/* Gradient background — parallax slower than content */}
+      <ParallaxSection speed={-0.2} className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-accent-blue/5 to-transparent" />
+      </ParallaxSection>
       <div className="absolute inset-0 bg-bg/80" />
 
       <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -31,14 +35,15 @@ export function CTAFinal() {
             3 places disponibles en avril
           </p>
 
-          <div className="mt-8">
-            <a
+          <div className="mt-8 flex justify-center">
+            <MagneticButton
+              as="a"
               href="#contact"
               className="group relative inline-flex items-center px-10 py-4 text-base font-semibold rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-accent/25 cursor-pointer min-h-[44px]"
             >
               <span className="relative z-10">Obtenir mon audit gratuit — Reponse en 24h</span>
               <div className="absolute inset-0 bg-gradient-to-r from-accent-blue to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </a>
+            </MagneticButton>
           </div>
 
           <p className="mt-6 text-sm text-text-muted">
@@ -56,7 +61,7 @@ export function CTAFinal() {
             <span className="w-1 h-1 rounded-full bg-zinc-600" />
             <span>Reponse en 24h</span>
             <span className="w-1 h-1 rounded-full bg-zinc-600" />
-            <span>+200 entreprises accompagnees</span>
+            <span><span className="stat-number">+200</span> entreprises accompagnees</span>
           </div>
         </motion.div>
       </div>

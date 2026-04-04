@@ -28,8 +28,9 @@
   --color-neon-blue: var(--accent-blue);
   --color-neon-cyan: var(--accent-cyan);
   --color-text-primary: var(--text);
-  --font-display: var(--font-space-grotesk);
+  --font-display: var(--font-sora);
   --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 /* ── Base ──────────────────────────────────────── */
@@ -41,6 +42,97 @@ body {
   background-color: var(--bg);
   color: var(--text);
   font-family: var(--font-body), system-ui, sans-serif;
+}
+
+/* ── Noise texture overlay ────────────────────── */
+.noise-overlay::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ── Smooth section dividers ──────────────────── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,92,246,0.3), rgba(59,130,246,0.3), transparent);
+  margin: 0 auto;
+  width: 80%;
+}
+
+/* ── Magnetic hover effect for buttons ────────── */
+.magnetic-hover {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ── Parallax depth layers ────────────────────── */
+.parallax-slow { will-change: transform; }
+.parallax-fast { will-change: transform; }
+
+/* ── Enhanced card hover with 3D tilt ─────────── */
+.card-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* ── Gradient line animation ──────────────────── */
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-gradient-line {
+  background: linear-gradient(90deg, #8b5cf6, #3b82f6, #06b6d4, #3b82f6, #8b5cf6);
+  background-size: 200% 100%;
+  animation: gradient-flow 4s linear infinite;
+  height: 2px;
+}
+
+/* ── Animated gradient border ─────────────────── */
+@keyframes gradient-border-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-gradient-border {
+  position: relative;
+}
+
+.animated-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, #8b5cf6, #3b82f6, #06b6d4, #3b82f6, #8b5cf6);
+  background-size: 200% 100%;
+  animation: gradient-border-flow 4s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Reveal mask animation ────────────────────── */
+@keyframes reveal-mask {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0% 0 0); }
+}
+
+/* ── Font families ────────────────────────────── */
+.font-display { font-family: var(--font-display); }
+.font-mono { font-family: var(--font-mono); }
+
+/* ── Number styling for stats/prices ──────────── */
+.stat-number {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
 /* ── Glassmorphism ─────────────────────────────── */
@@ -247,5 +339,17 @@ body {
 
   .pulsing-dot::before {
     animation: none;
+  }
+
+  .animated-gradient-line {
+    animation: none;
+  }
+
+  .animated-gradient-border::before {
+    animation: none;
+  }
+
+  .noise-overlay::before {
+    display: none;
   }
 }

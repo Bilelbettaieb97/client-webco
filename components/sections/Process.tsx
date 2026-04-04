@@ -11,6 +11,32 @@ interface ProcessProps {
 
 const stepTimelines = ["Jour 1", "Jours 2-3", "Jours 3-5", "Jours 5-30"]
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 },
+  },
+}
+
+const itemVariantsReduced = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.3 },
+  },
+}
+
 export function Process({ data }: ProcessProps) {
   const shouldReduce = useReducedMotion()
 
@@ -27,14 +53,17 @@ export function Process({ data }: ProcessProps) {
           {/* Connecting line (desktop only) */}
           <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-700 to-transparent -translate-y-1/2" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+          >
             {data.steps.map((step, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: shouldReduce ? 0 : 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.12 }}
+                variants={shouldReduce ? itemVariantsReduced : itemVariants}
                 className="relative"
               >
                 <SpotlightCard className="h-full p-6 sm:p-7">
@@ -43,8 +72,8 @@ export function Process({ data }: ProcessProps) {
                     {stepTimelines[index] || `Jour ${index + 1}`}
                   </span>
 
-                  {/* Step number */}
-                  <span className="text-4xl sm:text-5xl font-display font-bold text-gradient opacity-80 leading-none">
+                  {/* Step number — mono font */}
+                  <span className="text-4xl sm:text-5xl font-bold text-gradient opacity-80 leading-none font-mono stat-number">
                     {step.number}
                   </span>
 
@@ -69,7 +98,7 @@ export function Process({ data }: ProcessProps) {
                 )}
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

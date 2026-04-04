@@ -24,6 +24,9 @@ export function LogoBar() {
 
   return (
     <section className="relative py-16 sm:py-20 bg-bg border-y border-zinc-800/50" aria-label="Clients et statistiques">
+      {/* Animated gradient line at top */}
+      <div className="absolute top-0 left-0 right-0 animated-gradient-line" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Title */}
         <motion.p
@@ -73,6 +76,9 @@ export function LogoBar() {
           ))}
         </div>
       </div>
+
+      {/* Animated gradient line at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 animated-gradient-line" />
     </section>
   )
 }

@@ -26,15 +26,18 @@ export default async function HomePage() {
       <Navbar />
       <main id="main-content">
         <Hero data={data.hero} />
+        <div className="section-divider" />
         <LogoBar />
         <Problem data={data.about} />
         <Process data={data.process} />
         <Results data={data.results} />
+        <div className="section-divider" />
         <Portfolio data={data.portfolio} />
         <Testimonials data={data.testimonials} />
         <Services data={data.services} />
         <FAQ />
         <Pricing data={data.pricing} />
+        <div className="section-divider" />
         <Stack />
         <CTAFinal />
         <Contact data={data.contactInfo} />
