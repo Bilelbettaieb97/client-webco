@@ -7,7 +7,6 @@ import { AnimatedPaths } from "@/components/ui/AnimatedPaths"
 import { LivePageDemo } from "@/components/ui/LivePageDemo"
 import { TextReveal } from "@/components/ui/TextReveal"
 import { MagneticButton } from "@/components/ui/MagneticButton"
-import { ParallaxSection } from "@/components/ui/ParallaxSection"
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary"
 import { useRef, useEffect, useState, type MouseEvent as ReactMouseEvent } from "react"
 import type { HeroContent } from "@/lib/types"
@@ -68,19 +67,20 @@ export function Hero({ data }: HeroProps) {
       aria-label="Accueil"
       onMouseMove={handleMouseMove}
     >
-      {/* WebGL Fluid Background — bottommost layer */}
+      {/* Static gradient background — always visible immediately */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 30% 50%, rgba(139,92,246,0.1) 0%, transparent 50%), radial-gradient(ellipse at 70% 30%, rgba(59,130,246,0.07) 0%, transparent 50%)" }} />
+
+      {/* WebGL Fluid Background — layered on top of static */}
       <div className="absolute inset-0 z-0">
-        <ErrorBoundary fallback={
-          <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 30% 50%, rgba(139,92,246,0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 50%, rgba(59,130,246,0.08) 0%, transparent 50%)" }} />
-        }>
+        <ErrorBoundary>
           <FluidBackground />
         </ErrorBoundary>
       </div>
 
-      {/* Animated Background Paths — parallax slower */}
-      <ParallaxSection speed={-0.15} className="absolute inset-0 z-0">
+      {/* Animated Background Paths */}
+      <div className="absolute inset-0 z-0">
         <AnimatedPaths />
-      </ParallaxSection>
+      </div>
 
       {/* Gradient orb following mouse */}
       {!shouldReduce && !isTouchDevice && (
@@ -95,17 +95,14 @@ export function Hero({ data }: HeroProps) {
         />
       )}
 
-      {/* Radial gradient overlay */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.08)_0%,transparent_60%)] pointer-events-none" />
-
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40">
         <div className="text-center max-w-4xl mx-auto">
-          {/* Badge — scarcity + urgency */}
+          {/* Badge — scarcity + urgency — visible immediately */}
           <motion.div
-            initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
+            initial={{ opacity: 0, y: shouldReduce ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
           >
             <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-green-400 border border-green-400/30 rounded-full bg-green-400/5">
               <span className="pulsing-dot" />
@@ -113,12 +110,12 @@ export function Hero({ data }: HeroProps) {
             </span>
           </motion.div>
 
-          {/* Particle morphing multiplier — WOW first impression */}
+          {/* Particle morphing multiplier */}
           <motion.div
             className="mt-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
             <ErrorBoundary fallback={
               <div className="flex items-center justify-center mx-auto">
@@ -137,9 +134,9 @@ export function Hero({ data }: HeroProps) {
           {/* Subtitle */}
           <motion.p
             className="mt-6 text-base sm:text-lg md:text-xl text-text-muted max-w-2xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
+            initial={{ opacity: 0, y: shouldReduce ? 0 : 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
           >
             {data.subtitle ||
               "Nos landing pages generent en moyenne x3.2 de conversions pour les entreprises B2B. Design strategique, copywriting data-driven, A/B testing inclus."}
@@ -148,9 +145,9 @@ export function Hero({ data }: HeroProps) {
           {/* CTAs */}
           <motion.div
             className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
-            initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
+            initial={{ opacity: 0, y: shouldReduce ? 0 : 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1 }}
+            transition={{ duration: 0.4, delay: 0.4 }}
           >
             <MagneticButton
               href="#contact"
@@ -170,9 +167,9 @@ export function Hero({ data }: HeroProps) {
           {/* Micro-proof */}
           <motion.div
             className="mt-8 flex flex-col items-center gap-2"
-            initial={{ opacity: 0, y: shouldReduce ? 0 : 15 }}
+            initial={{ opacity: 0, y: shouldReduce ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.2 }}
+            transition={{ duration: 0.4, delay: 0.5 }}
           >
             <div className="flex items-center gap-1.5">
               {[...Array(5)].map((_, i) => (
@@ -190,9 +187,9 @@ export function Hero({ data }: HeroProps) {
         {/* LivePageDemo — Animated landing page being built in real-time */}
         <motion.div
           className="mt-16 sm:mt-20"
-          initial={{ opacity: 0, y: shouldReduce ? 0 : 60 }}
+          initial={{ opacity: 0, y: shouldReduce ? 0 : 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.4 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
         >
           <ErrorBoundary>
             <LivePageDemo />
