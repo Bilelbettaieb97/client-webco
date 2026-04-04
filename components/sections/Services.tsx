@@ -28,12 +28,12 @@ export function Services({ data }: ServicesProps) {
   const services = data.slice(0, 3)
 
   return (
-    <section id="offres" className="relative py-24 sm:py-32 bg-bg" aria-label="Nos offres">
+    <section id="offres" className="relative py-20 sm:py-28 bg-bg" aria-label="Nos offres">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           badge="Offres"
-          title="Une offre adaptee a vos objectifs"
-          subtitle="Landing page unique, pack conversion ou accompagnement continu. Choisissez la formule qui correspond a votre ambition."
+          title="Une offre adaptée à vos objectifs"
+          subtitle="Landing page unique, pack conversion ou accompagnement continu. Choisissez la formule qui correspond à votre ambition."
         />
 
         {/* Animated gradient line between heading and cards */}
@@ -74,7 +74,7 @@ export function Services({ data }: ServicesProps) {
               })}
             </div>
           }
-          hint="✨ Déplacez votre curseur pour révéler les insights"
+          hint="Déplacez votre curseur pour révéler les insights"
         >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
             {services.map((service, index) => {
@@ -88,7 +88,7 @@ export function Services({ data }: ServicesProps) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className={isPopular ? "md:-translate-y-4" : ""}
+                  className={`${isPopular ? "md:-translate-y-4" : ""} hover:border-accent/30 transition-colors duration-300`}
                 >
                   <Card3D className="h-full">
                     <SpotlightCard
@@ -101,7 +101,7 @@ export function Services({ data }: ServicesProps) {
                       {/* Popular badge */}
                       {isPopular && (
                         <span className="inline-block w-fit mb-4 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white bg-gradient-to-r from-accent to-accent-blue rounded-full">
-                          Plus demande
+                          Plus demandé
                         </span>
                       )}
 
@@ -119,7 +119,7 @@ export function Services({ data }: ServicesProps) {
                       <div className="mt-3">
                         {isPopular && (
                           <p className="text-xs text-text-muted mb-1">
-                            <span className="line-through">Valeur estimee : 12 000&#8364;</span>
+                            <span className="line-through">Valeur estimée : 12 000&#8364;</span>
                           </p>
                         )}
                         <div className="flex items-baseline gap-1">
@@ -146,7 +146,7 @@ export function Services({ data }: ServicesProps) {
 
                       {/* Friction reducer */}
                       <p className="mt-4 text-xs text-text-muted text-center">
-                        {index === 0 ? "Sans engagement" : index === 1 ? "Satisfait ou rembourse" : "Premier resultat en 48h"}
+                        {index === 0 ? "Sans engagement" : index === 1 ? "Satisfait ou remboursé" : "Premier résultat en 48h"}
                       </p>
 
                       {/* CTA */}
@@ -158,7 +158,7 @@ export function Services({ data }: ServicesProps) {
                             : "border border-zinc-700 text-text hover:border-accent/50 hover:bg-accent/5"
                         }`}
                       >
-                        {index === 0 ? "Demander un devis" : index === 1 ? "Reserver mon Pack Conversion" : "Discuter de mon abonnement"}
+                        {index === 0 ? "Demander un devis" : index === 1 ? "Réserver mon Pack Conversion" : "Discuter de mon abonnement"}
                       </a>
                     </SpotlightCard>
                   </Card3D>

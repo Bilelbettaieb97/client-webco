@@ -133,7 +133,7 @@ export function Hero({ data }: HeroProps) {
         </div>
 
         {/* LivePageDemo — replaces static mockup, with static fallback */}
-        <div className="mt-16 sm:mt-20 max-w-5xl mx-auto">
+        <div className="mt-16 sm:mt-20 pb-20 max-w-5xl mx-auto">
           <ErrorBoundary
             fallback={
               <BrowserMockup url="votre-landing-page.com">

@@ -19,7 +19,7 @@ export function SectionHeading({ badge, title, subtitle, centered = true }: Sect
       initial={{ opacity: 0, y: shouldReduce ? 0 : 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.5 }}
     >
       {badge && (
         <span className="inline-block mb-4 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-accent border border-accent/30 rounded-full bg-accent/5">

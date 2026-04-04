@@ -13,17 +13,17 @@ interface ProblemProps {
 }
 
 const defaultProblems = [
-  "Vous depensez +5 000\u20AC/mois en ads mais votre landing page convertit a moins de 2%",
-  "Votre page est jolie mais elle ne genere ni leads, ni demos, ni appels",
+  "Vous dépensez +5 000\u20AC/mois en ads mais votre landing page convertit à moins de 2%",
+  "Votre page est jolie mais elle ne génère ni leads, ni démos, ni appels",
   "Vous ne savez pas pourquoi vos visiteurs partent sans agir",
-  "Chaque lead vous coute de plus en plus cher — votre CAC explose",
+  "Chaque lead vous coûte de plus en plus cher — votre CAC explose",
 ]
 
 const defaultSolutions = [
-  "Chaque element de la page teste et optimise pour convertir",
-  "Copywriting B2B base sur les mots exacts de vos clients",
-  "A/B testing systematique — on ne devine pas, on mesure",
-  "ROI visible des les 2 premieres semaines",
+  "Chaque élément de la page testé et optimisé pour convertir",
+  "Copywriting B2B basé sur les mots exacts de vos clients",
+  "A/B testing systématique — on ne devine pas, on mesure",
+  "ROI visible dès les 2 premières semaines",
 ]
 
 export function Problem({ data }: ProblemProps) {
@@ -32,12 +32,12 @@ export function Problem({ data }: ProblemProps) {
   const solutions = data.solution_points?.length ? data.solution_points : defaultSolutions
 
   return (
-    <section className="relative py-24 sm:py-32 bg-bg" aria-label="Probleme et solution">
+    <section className="relative py-20 sm:py-28 bg-bg" aria-label="Problème et solution">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           badge="Le constat"
           title="Votre trafic ne convertit pas ?"
-          subtitle="Vous depensez du budget en acquisition, mais votre landing page ne fait pas le travail. On change ca."
+          subtitle="Vous dépensez du budget en acquisition, mais votre landing page ne fait pas le travail. On change ça."
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
@@ -55,7 +55,7 @@ export function Problem({ data }: ProblemProps) {
                     <X size={20} className="text-red-400" />
                   </div>
                   <h3 className="text-xl font-display font-bold text-text">
-                    <TextReveal text="Le probleme" />
+                    <TextReveal text="Le problème" />
                   </h3>
                 </div>
                 <ul className="space-y-4">
@@ -128,7 +128,7 @@ export function Problem({ data }: ProblemProps) {
         >
           <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-center">
             <p className="text-sm sm:text-base font-medium text-red-400 leading-relaxed">
-              Chaque mois sans optimisation, vous perdez en moyenne <span className="stat-number">73%</span> de vos visiteurs — et vos concurrents les recuperent.
+              Chaque mois sans optimisation, vous perdez en moyenne <span className="stat-number">73%</span> de vos visiteurs — et vos concurrents les récupèrent.
             </p>
           </div>
         </motion.div>

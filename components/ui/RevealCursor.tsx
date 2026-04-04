@@ -12,7 +12,7 @@ interface RevealCursorProps {
 export function RevealCursor({
   children,
   revealContent,
-  hint = "Deplacez votre curseur pour reveler les insights",
+  hint = "Déplacez votre curseur pour révéler les insights",
 }: RevealCursorProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const shouldReduce = useReducedMotion()

@@ -66,7 +66,7 @@ export function LiveABTest() {
   return (
     <section
       id="ab-test"
-      className="relative py-24 sm:py-32 bg-bg"
+      className="relative py-20 sm:py-28 bg-bg"
       aria-label="Test A/B interactif"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -178,7 +178,7 @@ export function LiveABTest() {
                   <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.08)_0%,transparent_60%)]" />
                   <div className="relative z-10 space-y-4">
                     <h4 className="text-lg sm:text-xl font-bold text-gradient font-display">
-                      Reduisez votre CAC de 40% en 30 jours
+                      Réduisez votre CAC de 40% en 30 jours
                     </h4>
 
                     {/* Social proof */}
@@ -211,8 +211,8 @@ export function LiveABTest() {
                     <ul className="space-y-1.5">
                       {[
                         "Audit CRO complet de votre landing page",
-                        "Redesign oriente conversion",
-                        "A/B testing integre et suivi",
+                        "Redesign orienté conversion",
+                        "A/B testing intégré et suivi",
                       ].map((item) => (
                         <li
                           key={item}
@@ -233,7 +233,7 @@ export function LiveABTest() {
                     {/* CTA */}
                     <div>
                       <span className="inline-block px-5 py-2 text-xs font-semibold rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white shadow-lg shadow-accent/20 cursor-default">
-                        Obtenir ma strategie gratuite
+                        Obtenir ma stratégie gratuite
                       </span>
                     </div>
                   </div>
@@ -293,9 +293,9 @@ export function LiveABTest() {
                   <span className="text-green-400 font-semibold stat-number">
                     88%
                   </span>{" "}
-                  des visiteurs preferent la{" "}
+                  des visiteurs préfèrent la{" "}
                   <span className="text-accent font-semibold">Variante B</span>.
-                  C&apos;est exactement les principes CRO que nous appliquons a
+                  C&apos;est exactement les principes CRO que nous appliquons à
                   vos landing pages.
                 </p>
 
@@ -303,7 +303,7 @@ export function LiveABTest() {
                   href="#contact"
                   className="mt-6 inline-flex items-center px-8 py-3.5 text-sm font-semibold rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 cursor-pointer min-h-[44px]"
                 >
-                  Appliquer ces principes a ma page →
+                  Appliquer ces principes à ma page →
                 </a>
               </motion.div>
             </motion.div>

@@ -9,42 +9,42 @@ const faqs = [
   {
     question: "Combien de temps pour livrer une landing page ?",
     answer:
-      "5 jours ouvres pour une landing page One-Shot. 2-3 semaines pour un Pack Conversion complet avec A/B testing et optimisation.",
+      "5 jours ouvrés pour une landing page One-Shot. 2-3 semaines pour un Pack Conversion complet avec A/B testing et optimisation.",
   },
   {
     question: "Vous travaillez avec quelle technologie ?",
     answer:
-      "On s'adapte a votre stack : Next.js, Webflow, WordPress, HubSpot CMS... L'important c'est la conversion, pas la techno.",
+      "On s'adapte à votre stack : Next.js, Webflow, WordPress, HubSpot CMS... L'important c'est la conversion, pas la techno.",
   },
   {
-    question: "Comment mesurez-vous les resultats ?",
+    question: "Comment mesurez-vous les résultats ?",
     answer:
-      "Analytics, heatmaps (Hotjar), A/B testing. On vous fournit un rapport detaille avec les KPIs : taux de conversion, cout par lead, ROI.",
+      "Analytics, heatmaps (Hotjar), A/B testing. On vous fournit un rapport détaillé avec les KPIs : taux de conversion, coût par lead, ROI.",
   },
   {
-    question: "Que se passe-t-il apres la livraison ?",
+    question: "Que se passe-t-il après la livraison ?",
     answer:
       "Avec le Pack Conversion, on optimise pendant 30 jours. Avec l'abonnement Growth, on optimise en continu chaque mois.",
   },
   {
     question: "Vous faites aussi le copywriting ?",
     answer:
-      "Oui. Le copy est le levier #1 de conversion. Chaque landing page inclut un copywriting oriente conversion, redige par nos experts B2B.",
+      "Oui. Le copy est le levier #1 de conversion. Chaque landing page inclut un copywriting orienté conversion, rédigé par nos experts B2B.",
   },
   {
     question: "Quel est le ROI moyen de vos landing pages ?",
     answer:
-      "Nos clients voient en moyenne un x3.2 sur leur taux de conversion. L'investissement est rentabilise en 2 a 4 semaines.",
+      "Nos clients voient en moyenne un x3.2 sur leur taux de conversion. L'investissement est rentabilisé en 2 à 4 semaines.",
   },
   {
-    question: "Et si ca ne fonctionne pas ?",
+    question: "Et si ça ne fonctionne pas ?",
     answer:
-      "On optimise pendant 30 jours post-livraison (Pack Conversion). Si les resultats ne sont pas au rendez-vous, on continue de travailler gratuitement jusqu'a atteindre vos objectifs.",
+      "On optimise pendant 30 jours post-livraison (Pack Conversion). Si les résultats ne sont pas au rendez-vous, on continue de travailler gratuitement jusqu'à atteindre vos objectifs.",
   },
   {
-    question: "Pourquoi vous plutot qu'une autre agence ?",
+    question: "Pourquoi vous plutôt qu'une autre agence ?",
     answer:
-      "Parce qu'on ne fait QUE des landing pages B2B. C'est notre specialite depuis 5 ans, +200 projets. On ne fait pas de sites vitrines, pas d'e-commerce — juste de la conversion B2B.",
+      "Parce qu'on ne fait QUE des landing pages B2B. C'est notre spécialité depuis 5 ans, +200 projets. On ne fait pas de sites vitrines, pas d'e-commerce — juste de la conversion B2B.",
   },
 ]
 
@@ -73,7 +73,7 @@ function FAQItem({
     >
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer min-h-[44px] hover:bg-zinc-800/30 transition-colors duration-200"
+        className="w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer min-h-[44px] hover:bg-zinc-800/50 transition-colors duration-300"
         aria-expanded={isOpen}
       >
         <span className="text-sm sm:text-base font-medium text-text pr-4">
@@ -110,11 +110,11 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
-    <section className="relative py-24 sm:py-32 bg-bg" aria-label="Questions frequentes">
+    <section className="relative py-20 sm:py-28 bg-bg" aria-label="Questions fréquentes">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           badge="FAQ"
-          title="Questions frequentes"
+          title="Questions fréquentes"
           subtitle="Tout ce que vous devez savoir avant de travailler avec nous."
         />
 

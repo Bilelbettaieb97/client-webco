@@ -33,8 +33,8 @@ function DataFlowPage() {
           <div className="h-2 w-8 bg-zinc-800 rounded" />
           <div className="h-2 w-8 bg-zinc-800 rounded" />
         </div>
-        <p className="text-[10px] sm:text-sm font-bold text-white mb-1">Analysez vos donnees</p>
-        <p className="text-[8px] sm:text-xs text-blue-300/60 mb-2">en temps reel</p>
+        <p className="text-[10px] sm:text-sm font-bold text-white mb-1">Analysez vos données</p>
+        <p className="text-[8px] sm:text-xs text-blue-300/60 mb-2">en temps réel</p>
         <div className="h-5 sm:h-7 w-20 sm:w-28 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-md mb-3" />
         {/* Dashboard elements */}
         <div className="grid grid-cols-3 gap-1.5 mt-2">
@@ -61,9 +61,9 @@ function PaySecurePage() {
           <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
           </svg>
-          <p className="text-[10px] sm:text-sm font-bold text-white">Paiements securises</p>
+          <p className="text-[10px] sm:text-sm font-bold text-white">Paiements sécurisés</p>
         </div>
-        <p className="text-[8px] sm:text-xs text-blue-200/40 mb-3">Conformite PCI DSS. Zero friction.</p>
+        <p className="text-[8px] sm:text-xs text-blue-200/40 mb-3">Conformité PCI DSS. Zéro friction.</p>
         <div className="h-5 sm:h-7 w-24 sm:w-32 bg-gradient-to-r from-blue-500 to-blue-700 rounded-md mb-3" />
         <div className="flex gap-2 mt-2">
           <div className="h-6 sm:h-8 flex-1 rounded bg-white/5 border border-white/10" />
@@ -92,7 +92,7 @@ function TalentHubPage() {
           </div>
         </div>
         <p className="text-[10px] sm:text-sm font-bold text-white mb-1">Recrutez les meilleurs talents</p>
-        <p className="text-[8px] sm:text-xs text-purple-300/50 mb-3">IA matching + scoring predictif</p>
+        <p className="text-[8px] sm:text-xs text-purple-300/50 mb-3">IA matching + scoring prédictif</p>
         <div className="h-5 sm:h-7 w-24 sm:w-32 bg-gradient-to-r from-purple-500 to-pink-500 rounded-md" />
         <div className="mt-3 space-y-1.5">
           <div className="h-3 sm:h-4 w-full rounded bg-purple-500/10 border border-purple-500/20 group-hover/page:bg-purple-500/15 transition-colors duration-500" />
@@ -111,8 +111,8 @@ function CloudOpsPage() {
           <div className="h-2 w-2 rounded-full bg-green-500" />
           <span className="text-[8px] sm:text-[10px] text-green-400/70">terminal</span>
         </div>
-        <p className="text-[10px] sm:text-sm font-bold text-white mb-1">Deployez en confiance</p>
-        <p className="text-[8px] sm:text-xs text-green-300/40 mb-3">CI/CD automatise. Zero downtime.</p>
+        <p className="text-[10px] sm:text-sm font-bold text-white mb-1">Déployez en confiance</p>
+        <p className="text-[8px] sm:text-xs text-green-300/40 mb-3">CI/CD automatisé. Zéro downtime.</p>
         <div className="h-5 sm:h-7 w-24 sm:w-32 bg-gradient-to-r from-green-600 to-emerald-500 rounded-md mb-3" />
         {/* Code-style lines */}
         <div className="mt-2 space-y-1 p-2 rounded bg-black/40 border border-green-500/10">
@@ -170,7 +170,7 @@ function GreenSupplyPage() {
           <div className="h-2 w-14 bg-green-500/20 rounded" />
         </div>
         <p className="text-[10px] sm:text-sm font-bold text-white mb-1">Supply chain durable</p>
-        <p className="text-[8px] sm:text-xs text-green-300/40 mb-3">Tracabilite. Impact. Conformite RSE.</p>
+        <p className="text-[8px] sm:text-xs text-green-300/40 mb-3">Traçabilité. Impact. Conformité RSE.</p>
         <div className="h-5 sm:h-7 w-24 sm:w-32 bg-gradient-to-r from-green-600 to-emerald-400 rounded-md" />
         <div className="mt-3 grid grid-cols-2 gap-1.5">
           <div className="h-6 sm:h-8 rounded bg-green-500/5 border border-green-500/15 group-hover/page:border-green-500/25 transition-colors duration-500" />
@@ -254,12 +254,12 @@ export function Portfolio({ data }: PortfolioProps) {
       : data.filter((item) => matchCategory(item.category, active))
 
     return (
-      <section id="realisations" className="relative py-24 sm:py-32 bg-bg" aria-label="Nos realisations B2B">
+      <section id="realisations" className="relative py-20 sm:py-28 bg-bg" aria-label="Nos réalisations B2B">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="Portfolio"
-            title="Nos realisations B2B"
-            subtitle="Des landing pages qui ont transforme le business de nos clients."
+            title="Nos réalisations B2B"
+            subtitle="Des landing pages qui ont transformé le business de nos clients."
           />
 
           {/* Filter Tabs */}
@@ -268,10 +268,10 @@ export function Portfolio({ data }: PortfolioProps) {
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
-                className={`px-4 py-2 text-sm rounded-lg transition-all duration-200 cursor-pointer min-h-[44px] ${
+                className={`px-4 py-2 text-sm rounded-lg transition-all duration-300 cursor-pointer min-h-[44px] ${
                   active === cat
-                    ? "bg-accent text-white"
-                    : "bg-zinc-800/50 text-text-muted hover:text-text hover:bg-zinc-800"
+                    ? "bg-accent text-white rounded-lg"
+                    : "text-text-muted hover:text-text hover:bg-zinc-800/50 rounded-lg"
                 }`}
               >
                 {cat}
@@ -360,12 +360,12 @@ export function Portfolio({ data }: PortfolioProps) {
     : defaultPortfolio.filter((item) => matchCategory(item.category, active))
 
   return (
-    <section id="realisations" className="relative py-24 sm:py-32 bg-bg" aria-label="Nos realisations B2B">
+    <section id="realisations" className="relative py-20 sm:py-28 bg-bg" aria-label="Nos réalisations B2B">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           badge="Portfolio"
-          title="Nos realisations B2B"
-          subtitle="Des landing pages qui ont transforme le business de nos clients."
+          title="Nos réalisations B2B"
+          subtitle="Des landing pages qui ont transformé le business de nos clients."
         />
 
         {/* Filter Tabs */}
@@ -374,10 +374,10 @@ export function Portfolio({ data }: PortfolioProps) {
             <button
               key={cat}
               onClick={() => setActive(cat)}
-              className={`px-4 py-2 text-sm rounded-lg transition-all duration-200 cursor-pointer min-h-[44px] ${
+              className={`px-4 py-2 text-sm rounded-lg transition-all duration-300 cursor-pointer min-h-[44px] ${
                 active === cat
-                  ? "bg-accent text-white"
-                  : "bg-zinc-800/50 text-text-muted hover:text-text hover:bg-zinc-800"
+                  ? "bg-accent text-white rounded-lg"
+                  : "text-text-muted hover:text-text hover:bg-zinc-800/50 rounded-lg"
               }`}
             >
               {cat}

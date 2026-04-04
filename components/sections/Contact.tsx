@@ -52,30 +52,39 @@ export function Contact({ data }: ContactProps) {
   }
 
   return (
-    <section id="contact" className="relative py-24 sm:py-32 bg-bg bg-grid" aria-label="Contact">
+    <section id="contact" className="relative py-20 sm:py-28 bg-bg bg-grid" aria-label="Contact">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           badge="Contact"
           title="Parlons de votre projet"
-          subtitle="Decrivez votre besoin en quelques mots. On vous repond sous 24h avec une proposition personnalisee."
+          subtitle="Décrivez votre besoin en quelques mots. On vous répond sous 24h avec une proposition personnalisée."
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Form -- 3 cols */}
           <div className="lg:col-span-3">
-            <SpotlightCard className="p-6 sm:p-8">
+            <SpotlightCard className="p-6 sm:p-8 relative overflow-hidden">
+              {/* Gradient top border */}
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent" />
               {status === "success" ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   className="text-center py-12"
                 >
-                  <CheckCircle2 size={48} className="mx-auto text-green-400 mb-4" />
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.1 }}
+                  >
+                    <CheckCircle2 size={56} className="mx-auto text-green-400 mb-4" />
+                  </motion.div>
                   <h3 className="text-xl font-display font-bold text-text mb-2">
-                    Merci ! Votre audit est en preparation.
+                    Merci ! Votre audit est en préparation.
                   </h3>
                   <p className="text-text-muted">
-                    Vous recevrez une reponse personnalisee sous 24h.
+                    Vous recevrez une réponse personnalisée sous 24h.
                   </p>
                   <button
                     onClick={() => setStatus("idle")}
@@ -88,7 +97,7 @@ export function Contact({ data }: ContactProps) {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   {/* Promise above form */}
                   <p className="text-sm text-accent font-medium text-center">
-                    Reponse personnalisee en moins de 24h
+                    Réponse personnalisée en moins de 24h
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -146,7 +155,7 @@ export function Contact({ data }: ContactProps) {
                       aria-required="true"
                       rows={4}
                       className="w-full px-4 py-3 text-sm rounded-lg bg-zinc-800/50 border border-zinc-700 text-text placeholder:text-text-muted/50 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors resize-none"
-                      placeholder="Decrivez votre projet en quelques mots : objectifs, audience cible, delais..."
+                      placeholder="Décrivez votre projet en quelques mots : objectifs, audience cible, délais..."
                     />
                   </div>
 
@@ -184,7 +193,7 @@ export function Contact({ data }: ContactProps) {
                   {/* Trust below form */}
                   <p className="text-xs text-text-muted text-center flex items-center justify-center gap-1.5">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-text-muted" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    Vos donnees restent confidentielles. Zero spam.
+                    Vos données restent confidentielles. Zéro spam.
                   </p>
                 </form>
               )}
@@ -192,7 +201,7 @@ export function Contact({ data }: ContactProps) {
           </div>
 
           {/* Info -- 2 cols */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-6 pt-6 lg:pt-0 border-t border-zinc-800 lg:border-t-0">
             <motion.div
               initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -235,7 +244,7 @@ export function Contact({ data }: ContactProps) {
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-4 py-2 text-sm rounded-lg bg-zinc-800/50 text-text-muted hover:text-accent hover:bg-zinc-800 transition-all duration-200 cursor-pointer min-h-[44px] flex items-center"
+                        className="px-4 py-2 text-sm rounded-lg bg-zinc-800/50 text-text-muted hover:text-accent hover:bg-zinc-800 transition-all duration-300 cursor-pointer min-h-[44px] flex items-center"
                         aria-label={social.platform}
                       >
                         {social.platform}
@@ -258,10 +267,10 @@ export function Contact({ data }: ContactProps) {
                   Garanties
                 </p>
                 <ul className="space-y-2 text-sm text-text-muted">
-                  <li>Reponse sous 24h</li>
-                  <li>Appel strategique gratuit</li>
+                  <li>Réponse sous 24h</li>
+                  <li>Appel stratégique gratuit</li>
                   <li>Sans engagement</li>
-                  <li>+200 projets B2B livres</li>
+                  <li>+200 projets B2B livrés</li>
                 </ul>
               </SpotlightCard>
             </motion.div>

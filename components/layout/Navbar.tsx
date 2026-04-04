@@ -7,9 +7,9 @@ import { MagneticButton } from "@/components/ui/MagneticButton"
 
 const navLinks = [
   { href: "#process", label: "Process" },
-  { href: "#resultats", label: "Resultats" },
+  { href: "#resultats", label: "Résultats" },
   { href: "#offres", label: "Offres" },
-  { href: "#temoignages", label: "Temoignages" },
+  { href: "#temoignages", label: "Témoignages" },
 ]
 
 export function Navbar() {
@@ -55,7 +55,7 @@ export function Navbar() {
             <a
               href="#"
               className="text-xl sm:text-2xl font-display font-bold text-gradient"
-              aria-label="Webco - Retour a l'accueil"
+              aria-label="Webco - Retour à l'accueil"
             >
               Webco
             </a>
@@ -66,9 +66,10 @@ export function Navbar() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-text-muted hover:text-text transition-colors duration-200 font-medium"
+                  className="relative text-sm text-text-muted hover:text-text transition-colors duration-300 font-medium group/link"
                 >
                   {link.label}
+                  <span className="absolute -bottom-1 left-0 h-px w-0 bg-gradient-to-r from-accent to-accent-blue group-hover/link:w-full transition-all duration-300" />
                 </a>
               ))}
               <MagneticButton

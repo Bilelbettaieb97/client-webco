@@ -15,7 +15,7 @@ const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.15,
+      staggerChildren: 0.08,
     },
   },
 }
@@ -41,12 +41,12 @@ export function Process({ data }: ProcessProps) {
   const shouldReduce = useReducedMotion()
 
   return (
-    <section id="process" className="relative py-24 sm:py-32 bg-bg" aria-label="Notre process">
+    <section id="process" className="relative py-20 sm:py-28 bg-bg" aria-label="Notre process">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          badge="Methodologie"
-          title={data.title || "Notre process en 4 etapes"}
-          subtitle={data.subtitle || "Simple, rapide, efficace. Vous n'avez qu'a nous envoyer votre brief."}
+          badge="Méthodologie"
+          title={data.title || "Notre process en 4 étapes"}
+          subtitle={data.subtitle || "Simple, rapide, efficace. Vous n'avez qu'à nous envoyer votre brief."}
         />
 
         <div className="relative">

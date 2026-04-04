@@ -15,12 +15,12 @@ export function Pricing({ data }: PricingProps) {
   const shouldReduce = useReducedMotion()
 
   return (
-    <section id="tarifs" className="relative py-24 sm:py-32 bg-bg" aria-label="Nos tarifs">
+    <section id="tarifs" className="relative py-20 sm:py-28 bg-bg" aria-label="Nos tarifs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           badge="Tarifs"
           title="Investissez dans la conversion"
-          subtitle="Chaque euro investi dans une landing page optimisee vous revient multiplie. Choisissez la formule qui correspond a vos objectifs."
+          subtitle="Chaque euro investi dans une landing page optimisée vous revient multiplié. Choisissez la formule qui correspond à vos objectifs."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
@@ -31,7 +31,7 @@ export function Pricing({ data }: PricingProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={plan.is_popular ? "md:-translate-y-4" : ""}
+              className={`${plan.is_popular ? "md:-translate-y-4" : ""} hover:border-accent/30 transition-colors duration-300`}
             >
               <Card3D className="h-full">
                 <SpotlightCard
@@ -44,7 +44,7 @@ export function Pricing({ data }: PricingProps) {
                   {/* Popular badge */}
                   {plan.is_popular && (
                     <span className="inline-block w-fit mb-4 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white bg-gradient-to-r from-accent to-accent-blue rounded-full">
-                      Plus demande
+                      Plus demandé
                     </span>
                   )}
 
@@ -57,7 +57,7 @@ export function Pricing({ data }: PricingProps) {
                   <div className="mt-4">
                     {plan.is_popular && (
                       <p className="text-xs text-text-muted mb-1">
-                        <span className="line-through">Valeur estimee : <span className="stat-number">12 000&#8364;</span></span>
+                        <span className="line-through">Valeur estimée : <span className="stat-number">12 000&#8364;</span></span>
                       </p>
                     )}
                     <div className="flex items-baseline gap-1">
@@ -85,7 +85,7 @@ export function Pricing({ data }: PricingProps) {
 
                   {/* Friction reducer */}
                   <p className="mt-4 text-xs text-text-muted text-center">
-                    {index === 0 ? "Sans engagement" : index === 1 ? "Satisfait ou rembourse" : "Premier resultat en 48h"}
+                    {index === 0 ? "Sans engagement" : index === 1 ? "Satisfait ou remboursé" : "Premier résultat en 48h"}
                   </p>
 
                   {/* CTA */}
@@ -97,7 +97,7 @@ export function Pricing({ data }: PricingProps) {
                         : "border border-zinc-700 text-text hover:border-accent/50 hover:bg-accent/5"
                     }`}
                   >
-                    {index === 0 ? "Demander un devis" : index === 1 ? "Reserver mon Pack Conversion" : "Discuter de mon abonnement"}
+                    {index === 0 ? "Demander un devis" : index === 1 ? "Réserver mon Pack Conversion" : "Discuter de mon abonnement"}
                   </a>
                 </SpotlightCard>
               </Card3D>

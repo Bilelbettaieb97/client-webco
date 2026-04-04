@@ -18,19 +18,19 @@ export function Results({ data }: ResultsProps) {
   const shouldReduce = useReducedMotion()
 
   return (
-    <section id="resultats" className="relative py-24 sm:py-32 bg-bg" aria-label="Resultats">
+    <section id="resultats" className="relative py-20 sm:py-28 bg-bg" aria-label="Résultats">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          badge="Resultats"
-          title={data.title || "Des resultats, pas des promesses"}
-          subtitle={data.subtitle || "Voici les resultats concrets que nous avons obtenus pour nos clients B2B."}
+          badge="Résultats"
+          title={data.title || "Des résultats, pas des promesses"}
+          subtitle={data.subtitle || "Voici les résultats concrets que nous avons obtenus pour nos clients B2B."}
         />
 
         <p className="text-center text-sm text-text-muted -mt-6 mb-10">
-          Pas des promesses — des metriques verifiables.
+          Pas des promesses — des métriques vérifiables.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8">
           {data.cases.map((item, index) => (
             <motion.div
               key={index}
@@ -70,7 +70,7 @@ export function Results({ data }: ResultsProps) {
                   {/* ROI estimate */}
                   <div className="px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/20 mb-4">
                     <p className="text-xs font-medium text-green-400">
-                      ROI estime : <span className="stat-number">{roiEstimates[index] || "+300% en 90 jours"}</span>
+                      ROI estimé : <span className="stat-number">{roiEstimates[index] || "+300% en 90 jours"}</span>
                     </p>
                   </div>
 
@@ -99,7 +99,7 @@ export function Results({ data }: ResultsProps) {
             href="#contact"
             className="group relative inline-flex items-center px-8 py-3.5 text-sm font-semibold rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 cursor-pointer min-h-[44px]"
           >
-            <span className="relative z-10">Obtenir les memes resultats →</span>
+            <span className="relative z-10">Obtenir les mêmes résultats →</span>
             <div className="absolute inset-0 bg-gradient-to-r from-accent-blue to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </a>
         </motion.div>
@@ -114,13 +114,13 @@ export function Results({ data }: ResultsProps) {
             transition={{ duration: 0.5 }}
           >
             <p className="text-sm text-accent font-medium uppercase tracking-widest mb-3">
-              Avant / Apres
+              Avant / Après
             </p>
             <h3 className="text-2xl sm:text-3xl font-display font-bold text-text">
-              Glissez pour voir la difference
+              Glissez pour voir la différence
             </h3>
             <p className="text-sm text-text-muted mt-2">
-              A gauche, une page generique. A droite, une landing page Webco.
+              À gauche, une page générique. À droite, une landing page Webco.
             </p>
           </motion.div>
 

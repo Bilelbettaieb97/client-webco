@@ -1,14 +1,14 @@
 const navLinks = [
   { label: "Process", href: "#process" },
-  { label: "Resultats", href: "#resultats" },
+  { label: "Résultats", href: "#resultats" },
   { label: "Offres", href: "#offres" },
-  { label: "Temoignages", href: "#temoignages" },
+  { label: "Témoignages", href: "#temoignages" },
   { label: "Contact", href: "#contact" },
 ]
 
 const legalLinks = [
-  { label: "Mentions legales", href: "/mentions-legales" },
-  { label: "Politique de confidentialite", href: "/confidentialite" },
+  { label: "Mentions légales", href: "/mentions-legales" },
+  { label: "Politique de confidentialité", href: "/confidentialite" },
 ]
 
 const socials = [
@@ -30,7 +30,7 @@ export function Footer() {
               Webco
             </a>
             <p className="mt-4 text-sm text-text-muted leading-relaxed max-w-xs">
-              Landing pages B2B qui convertissent. Design strategique, copywriting oriente resultats, optimisation continue.
+              Landing pages B2B qui convertissent. Design stratégique, copywriting orienté résultats, optimisation continue.
             </p>
           </div>
 
@@ -50,10 +50,10 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Legal */}
+          {/* Légal */}
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider text-text mb-4">
-              Legal
+              Légal
             </h3>
             <ul className="space-y-3">
               {legalLinks.map((link) => (
@@ -85,7 +85,7 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-2 text-xs font-medium rounded-lg bg-zinc-800/50 text-text-muted hover:text-accent hover:bg-zinc-800 transition-all duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center"
+                  className="px-3 py-2 text-xs font-medium rounded-lg bg-zinc-800/50 text-text-muted hover:text-accent hover:bg-zinc-800 transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center"
                   aria-label={social.label}
                 >
                   {social.label}
@@ -98,10 +98,10 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-zinc-800/50 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-text-muted">
-            &copy; {new Date().getFullYear()} Webco. Tous droits reserves.
+            &copy; {new Date().getFullYear()} Webco. Tous droits réservés.
           </p>
           <p className="text-xs text-text-muted">
-            Made with &#9824; by Webco
+            Conçu par Webco
           </p>
         </div>
       </div>

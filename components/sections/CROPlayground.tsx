@@ -85,7 +85,7 @@ export function CROPlayground() {
   return (
     <section
       id="cro-playground"
-      className="relative py-24 sm:py-32 bg-bg"
+      className="relative py-20 sm:py-28 bg-bg"
       aria-label="CRO Playground interactif"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -95,7 +95,7 @@ export function CROPlayground() {
           subtitle="Activez les leviers de conversion et observez le taux grimper."
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-8 items-start">
           {/* Left: Browser Mockup (60%) */}
           <div className="lg:col-span-3">
             <BrowserMockup url="votrelanding.com">
@@ -133,7 +133,7 @@ export function CROPlayground() {
 
                   {/* Subtitle text */}
                   <p className="text-sm text-zinc-500 leading-relaxed max-w-md">
-                    Nous aidons les entreprises B2B a optimiser leurs conversions avec un design strategique et du copywriting data-driven.
+                    Nous aidons les entreprises B2B à optimiser leurs conversions avec un design stratégique et du copywriting data-driven.
                   </p>
 
                   {/* Social proof */}
@@ -250,9 +250,9 @@ export function CROPlayground() {
                       >
                         {[
                           "Nom",
-                          "Prenom",
+                          "Prénom",
                           "Email",
-                          "Telephone",
+                          "Téléphone",
                           "Entreprise",
                           "Poste",
                           "Budget",
@@ -274,7 +274,7 @@ export function CROPlayground() {
           </div>
 
           {/* Right: Toggle panel (40%) */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="lg:col-span-2 space-y-4 mt-6 lg:mt-0">
             <h3 className="text-sm font-semibold text-text-muted uppercase tracking-widest mb-6">
               Leviers de conversion
             </h3>
@@ -381,8 +381,8 @@ export function CROPlayground() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <p className="text-base text-text-muted max-w-xl mx-auto leading-relaxed">
-            Chaque decision de design impacte vos conversions. Chez Webco, rien
-            n&apos;est laisse au hasard.
+            Chaque décision de design impacte vos conversions. Chez Webco, rien
+            n&apos;est laissé au hasard.
           </p>
           <a
             href="#contact"
