@@ -44,16 +44,7 @@ body {
   font-family: var(--font-body), system-ui, sans-serif;
 }
 
-/* ── Noise texture overlay ────────────────────── */
-.noise-overlay::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-}
+/* ── Noise overlay removed — caused rendering issues ── */
 
 /* ── Smooth section dividers ──────────────────── */
 .section-divider {
@@ -402,28 +393,17 @@ input[type="range"]::-moz-range-thumb {
 
 /* ── Reduced motion ────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+  html { scroll-behavior: auto !important; }
 
-  .pulsing-dot::before {
-    animation: none;
-  }
-
-  .animated-gradient-line {
-    animation: none;
-  }
-
+  .pulsing-dot::before,
+  .animated-gradient-line,
   .animated-gradient-border::before {
     animation: none;
   }
 
-  .noise-overlay::before {
-    display: none;
+  .animate-marquee,
+  .animate-scroll-up,
+  .animate-scroll-down {
+    animation: none;
   }
 }

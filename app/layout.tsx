@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { Sora, Inter, JetBrains_Mono } from 'next/font/google'
-import { SmoothScroll } from '@/components/ui/SmoothScroll'
 import './globals.css'
 
 const sora = Sora({
@@ -60,16 +59,14 @@ export default function RootLayout({
       lang="fr"
       className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}
     >
-      <body className="noise-overlay min-h-screen bg-bg text-text font-body overflow-x-hidden">
+      <body className="min-h-screen bg-bg text-text font-body overflow-x-hidden">
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-neon-violet focus:text-white focus:rounded-lg"
         >
           Aller au contenu principal
         </a>
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+        {children}
       </body>
     </html>
   )
