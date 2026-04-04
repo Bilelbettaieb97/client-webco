@@ -11,13 +11,6 @@ interface ContactProps {
   data: ContactInfo
 }
 
-const budgets = [
-  "< 3 000 EUR",
-  "3 000 - 6 000 EUR",
-  "6 000 - 10 000 EUR",
-  "> 10 000 EUR",
-]
-
 export function Contact({ data }: ContactProps) {
   const shouldReduce = useReducedMotion()
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
@@ -79,10 +72,10 @@ export function Contact({ data }: ContactProps) {
                 >
                   <CheckCircle2 size={48} className="mx-auto text-green-400 mb-4" />
                   <h3 className="text-xl font-display font-bold text-text mb-2">
-                    Demande envoyee !
+                    Merci ! Votre audit est en preparation.
                   </h3>
                   <p className="text-text-muted">
-                    Merci pour votre message. Nous vous repondrons dans les 24 heures avec une proposition.
+                    Vous recevrez une reponse personnalisee sous 24h.
                   </p>
                   <button
                     onClick={() => setStatus("idle")}
@@ -93,10 +86,15 @@ export function Contact({ data }: ContactProps) {
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
+                  {/* Promise above form */}
+                  <p className="text-sm text-accent font-medium text-center">
+                    Reponse personnalisee en moins de 24h
+                  </p>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-text mb-1.5">
-                        Nom complet *
+                        Nom *
                       </label>
                       <input
                         id="name"
@@ -124,54 +122,22 @@ export function Contact({ data }: ContactProps) {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div>
-                      <label htmlFor="company" className="block text-sm font-medium text-text mb-1.5">
-                        Entreprise
-                      </label>
-                      <input
-                        id="company"
-                        name="company"
-                        type="text"
-                        className="w-full px-4 py-3 text-sm rounded-lg bg-zinc-800/50 border border-zinc-700 text-text placeholder:text-text-muted/50 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
-                        placeholder="Nom de votre entreprise"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="poste" className="block text-sm font-medium text-text mb-1.5">
-                        Poste
-                      </label>
-                      <input
-                        id="poste"
-                        name="poste"
-                        type="text"
-                        className="w-full px-4 py-3 text-sm rounded-lg bg-zinc-800/50 border border-zinc-700 text-text placeholder:text-text-muted/50 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
-                        placeholder="Head of Growth, CMO..."
-                      />
-                    </div>
-                  </div>
-
                   <div>
-                    <label htmlFor="budget" className="block text-sm font-medium text-text mb-1.5">
-                      Budget
+                    <label htmlFor="company" className="block text-sm font-medium text-text mb-1.5">
+                      Entreprise
                     </label>
-                    <select
-                      id="budget"
-                      name="budget"
-                      className="w-full px-4 py-3 text-sm rounded-lg bg-zinc-800/50 border border-zinc-700 text-text focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors cursor-pointer"
-                    >
-                      <option value="">Selectionnez un budget...</option>
-                      {budgets.map((b) => (
-                        <option key={b} value={b}>
-                          {b}
-                        </option>
-                      ))}
-                    </select>
+                    <input
+                      id="company"
+                      name="company"
+                      type="text"
+                      className="w-full px-4 py-3 text-sm rounded-lg bg-zinc-800/50 border border-zinc-700 text-text placeholder:text-text-muted/50 focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
+                      placeholder="Nom de votre entreprise"
+                    />
                   </div>
 
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium text-text mb-1.5">
-                      Decrivez votre projet *
+                      Message *
                     </label>
                     <textarea
                       id="message"
@@ -210,10 +176,16 @@ export function Contact({ data }: ContactProps) {
                     ) : (
                       <>
                         <Send size={16} />
-                        Envoyer ma demande
+                        Obtenir mon audit gratuit
                       </>
                     )}
                   </button>
+
+                  {/* Trust below form */}
+                  <p className="text-xs text-text-muted text-center flex items-center justify-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-text-muted" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Vos donnees restent confidentielles. Zero spam.
+                  </p>
                 </form>
               )}
             </SpotlightCard>

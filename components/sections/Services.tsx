@@ -58,7 +58,7 @@ export function Services({ data }: ServicesProps) {
                   {/* Popular badge */}
                   {isPopular && (
                     <span className="inline-block w-fit mb-4 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white bg-gradient-to-r from-accent to-accent-blue rounded-full">
-                      Populaire
+                      Plus demande
                     </span>
                   )}
 
@@ -72,11 +72,18 @@ export function Services({ data }: ServicesProps) {
                     {service.title}
                   </h3>
 
-                  {/* Price */}
-                  <div className="mt-3 flex items-baseline gap-1">
-                    <span className="text-2xl font-display font-bold text-gradient">
-                      {service.price}
-                    </span>
+                  {/* Price with anchoring */}
+                  <div className="mt-3">
+                    {isPopular && (
+                      <p className="text-xs text-text-muted mb-1">
+                        <span className="line-through">Valeur estimee : 12 000\u20AC</span>
+                      </p>
+                    )}
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-2xl font-display font-bold text-gradient">
+                        {isPopular ? "Votre prix : " : ""}{service.price}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Description */}
@@ -94,16 +101,21 @@ export function Services({ data }: ServicesProps) {
                     ))}
                   </ul>
 
+                  {/* Friction reducer */}
+                  <p className="mt-4 text-xs text-text-muted text-center">
+                    {index === 0 ? "Sans engagement" : index === 1 ? "Satisfait ou rembourse" : "Premier resultat en 48h"}
+                  </p>
+
                   {/* CTA */}
                   <a
                     href="#contact"
-                    className={`mt-8 block text-center py-3 px-6 text-sm font-semibold rounded-lg transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center ${
+                    className={`mt-4 block text-center py-3 px-6 text-sm font-semibold rounded-lg transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center ${
                       isPopular
                         ? "bg-gradient-to-r from-accent to-accent-blue text-white hover:opacity-90 hover:shadow-lg hover:shadow-accent/25"
                         : "border border-zinc-700 text-text hover:border-accent/50 hover:bg-accent/5"
                     }`}
                   >
-                    Choisir cette offre
+                    {index === 0 ? "Demander un devis" : index === 1 ? "Reserver mon Pack Conversion" : "Discuter de mon abonnement"}
                   </a>
                 </SpotlightCard>
               </motion.div>

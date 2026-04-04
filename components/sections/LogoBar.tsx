@@ -13,8 +13,8 @@ const clients = [
 ]
 
 const stats = [
-  { value: 200, suffix: "+", label: "Pages livrees" },
   { value: 3.2, suffix: "x", label: "Conversion moyenne" },
+  { value: 200, suffix: "+", label: "Pages livrees" },
   { value: 48, suffix: "h", label: "Premier draft" },
   { value: 97, suffix: "%", label: "Renouvellement" },
 ]
@@ -33,12 +33,12 @@ export function LogoBar() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          +200 landing pages livrees pour des entreprises B2B
+          Ils ont multiplie leurs conversions avec nous
         </motion.p>
 
-        {/* Client logos (text-based) */}
+        {/* Client logos (badge-style) */}
         <motion.div
-          className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 mb-14"
+          className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mb-14"
           initial={{ opacity: 0, y: shouldReduce ? 0 : 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -47,7 +47,7 @@ export function LogoBar() {
           {clients.map((name) => (
             <span
               key={name}
-              className="text-lg sm:text-xl font-display font-semibold text-zinc-600 hover:text-zinc-400 transition-colors duration-200"
+              className="px-5 py-2.5 text-base sm:text-lg font-display font-semibold text-zinc-400 border border-zinc-800 rounded-lg bg-zinc-900/50 hover:border-zinc-600 hover:text-zinc-300 transition-all duration-200"
             >
               {name}
             </span>
@@ -56,13 +56,20 @@ export function LogoBar() {
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {stats.map((stat) => (
-            <AnimatedCounter
-              key={stat.label}
-              value={stat.value}
-              suffix={stat.suffix}
-              label={stat.label}
-            />
+          {stats.map((stat, index) => (
+            <div key={stat.label} className="relative">
+              <AnimatedCounter
+                value={stat.value}
+                suffix={stat.suffix}
+                label={stat.label}
+              />
+              {index === 1 && (
+                <p className="text-center mt-1 flex items-center justify-center gap-1.5 text-xs text-green-400">
+                  <span className="pulsing-dot" />
+                  et ca continue
+                </p>
+              )}
+            </div>
           ))}
         </div>
       </div>

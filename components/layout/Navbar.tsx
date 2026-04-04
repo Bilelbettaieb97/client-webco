@@ -72,9 +72,10 @@ export function Navbar() {
               ))}
               <a
                 href="#contact"
-                className="px-5 py-2.5 text-sm font-medium rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white hover:opacity-90 transition-opacity cursor-pointer min-h-[44px] flex items-center"
+                className="px-5 py-2.5 text-sm font-medium rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white hover:opacity-90 transition-opacity cursor-pointer min-h-[44px] flex items-center gap-2"
               >
-                Reserver un appel
+                <span className="pulsing-dot" />
+                Audit gratuit
               </a>
             </div>
 
@@ -129,9 +130,10 @@ export function Navbar() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35 }}
-                className="mt-4 px-8 py-3 text-lg font-medium rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white"
+                className="mt-4 px-8 py-3 text-lg font-medium rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white flex items-center gap-2"
               >
-                Reserver un appel
+                <span className="pulsing-dot" />
+                Audit gratuit
               </motion.a>
             </div>
           </motion.div>

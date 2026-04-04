@@ -36,6 +36,16 @@ const faqs = [
     answer:
       "Nos clients voient en moyenne un x3.2 sur leur taux de conversion. L'investissement est rentabilise en 2 a 4 semaines.",
   },
+  {
+    question: "Et si ca ne fonctionne pas ?",
+    answer:
+      "On optimise pendant 30 jours post-livraison (Pack Conversion). Si les resultats ne sont pas au rendez-vous, on continue de travailler gratuitement jusqu'a atteindre vos objectifs.",
+  },
+  {
+    question: "Pourquoi vous plutot qu'une autre agence ?",
+    answer:
+      "Parce qu'on ne fait QUE des landing pages B2B. C'est notre specialite depuis 5 ans, +200 projets. On ne fait pas de sites vitrines, pas d'e-commerce — juste de la conversion B2B.",
+  },
 ]
 
 function FAQItem({

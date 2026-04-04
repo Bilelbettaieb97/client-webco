@@ -14,6 +14,7 @@ import { FAQ } from "@/components/sections/FAQ"
 import { CTAFinal } from "@/components/sections/CTAFinal"
 import { Contact } from "@/components/sections/Contact"
 import { Footer } from "@/components/layout/Footer"
+import { StickyCta } from "@/components/ui/StickyCta"
 
 export const revalidate = 3600
 
@@ -29,16 +30,17 @@ export default async function HomePage() {
         <Problem data={data.about} />
         <Process data={data.process} />
         <Results data={data.results} />
-        <Services data={data.services} />
         <Portfolio data={data.portfolio} />
-        <Pricing data={data.pricing} />
         <Testimonials data={data.testimonials} />
-        <Stack />
+        <Services data={data.services} />
         <FAQ />
+        <Pricing data={data.pricing} />
+        <Stack />
         <CTAFinal />
         <Contact data={data.contactInfo} />
       </main>
       <Footer />
+      <StickyCta />
     </>
   )
 }

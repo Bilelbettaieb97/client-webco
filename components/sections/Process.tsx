@@ -9,6 +9,8 @@ interface ProcessProps {
   data: ProcessContent
 }
 
+const stepTimelines = ["Jour 1", "Jours 2-3", "Jours 3-5", "Jours 5-30"]
+
 export function Process({ data }: ProcessProps) {
   const shouldReduce = useReducedMotion()
 
@@ -18,7 +20,7 @@ export function Process({ data }: ProcessProps) {
         <SectionHeading
           badge="Methodologie"
           title={data.title || "Notre process en 4 etapes"}
-          subtitle={data.subtitle || "Une methodologie eprouvee pour maximiser vos conversions."}
+          subtitle={data.subtitle || "Simple, rapide, efficace. Vous n'avez qu'a nous envoyer votre brief."}
         />
 
         <div className="relative">
@@ -36,6 +38,11 @@ export function Process({ data }: ProcessProps) {
                 className="relative"
               >
                 <SpotlightCard className="h-full p-6 sm:p-7">
+                  {/* Timeline badge */}
+                  <span className="inline-block px-2.5 py-1 text-xs font-medium text-accent border border-accent/30 rounded-full bg-accent/5 mb-3">
+                    {stepTimelines[index] || `Jour ${index + 1}`}
+                  </span>
+
                   {/* Step number */}
                   <span className="text-4xl sm:text-5xl font-display font-bold text-gradient opacity-80 leading-none">
                     {step.number}

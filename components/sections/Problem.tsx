@@ -11,17 +11,17 @@ interface ProblemProps {
 }
 
 const defaultProblems = [
-  "Vous investissez en ads mais les visiteurs repartent sans convertir",
-  "Votre landing page est jolie mais ne genere pas de leads",
-  "Vous ne savez pas pourquoi votre taux de conversion stagne",
-  "Chaque lead vous coute de plus en plus cher",
+  "Vous depensez +5 000\u20AC/mois en ads mais votre landing page convertit a moins de 2%",
+  "Votre page est jolie mais elle ne genere ni leads, ni demos, ni appels",
+  "Vous ne savez pas pourquoi vos visiteurs partent sans agir",
+  "Chaque lead vous coute de plus en plus cher — votre CAC explose",
 ]
 
 const defaultSolutions = [
-  "Chaque element de la page pense pour la conversion",
-  "Copywriting B2B oriente resultats, pas du blabla",
-  "A/B testing et optimisation data-driven",
-  "ROI mesurable des les premieres semaines",
+  "Chaque element de la page teste et optimise pour convertir",
+  "Copywriting B2B base sur les mots exacts de vos clients",
+  "A/B testing systematique — on ne devine pas, on mesure",
+  "ROI visible des les 2 premieres semaines",
 ]
 
 export function Problem({ data }: ProblemProps) {
@@ -73,6 +73,21 @@ export function Problem({ data }: ProblemProps) {
                 ))}
               </ul>
             </SpotlightCard>
+          </motion.div>
+
+          {/* Agitation box — between problem and solution */}
+          <motion.div
+            className="lg:col-span-2"
+            initial={{ opacity: 0, y: shouldReduce ? 0 : 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-center">
+              <p className="text-sm sm:text-base font-medium text-red-400 leading-relaxed">
+                Chaque mois sans optimisation, vous perdez en moyenne 73% de vos visiteurs — et vos concurrents les recuperent.
+              </p>
+            </div>
           </motion.div>
 
           {/* Solution side */}

@@ -42,7 +42,7 @@ export function Pricing({ data }: PricingProps) {
                 {/* Popular badge */}
                 {plan.is_popular && (
                   <span className="inline-block w-fit mb-4 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white bg-gradient-to-r from-accent to-accent-blue rounded-full">
-                    Populaire
+                    Plus demande
                   </span>
                 )}
 
@@ -51,12 +51,19 @@ export function Pricing({ data }: PricingProps) {
                   {plan.name}
                 </h3>
 
-                {/* Price */}
-                <div className="mt-4 flex items-baseline gap-1">
-                  <span className="text-4xl font-display font-bold text-gradient">
-                    {plan.price}
-                  </span>
-                  <span className="text-text-muted text-sm">EUR</span>
+                {/* Price with anchoring */}
+                <div className="mt-4">
+                  {plan.is_popular && (
+                    <p className="text-xs text-text-muted mb-1">
+                      <span className="line-through">Valeur estimee : 12 000&#8364;</span>
+                    </p>
+                  )}
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-display font-bold text-gradient">
+                      {plan.is_popular ? "Votre prix : " : ""}{plan.price}
+                    </span>
+                    <span className="text-text-muted text-sm">EUR</span>
+                  </div>
                 </div>
 
                 {/* Description */}
@@ -74,16 +81,21 @@ export function Pricing({ data }: PricingProps) {
                   ))}
                 </ul>
 
+                {/* Friction reducer */}
+                <p className="mt-4 text-xs text-text-muted text-center">
+                  {index === 0 ? "Sans engagement" : index === 1 ? "Satisfait ou rembourse" : "Premier resultat en 48h"}
+                </p>
+
                 {/* CTA */}
                 <a
                   href="#contact"
-                  className={`mt-8 block text-center py-3 px-6 text-sm font-semibold rounded-lg transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center ${
+                  className={`mt-4 block text-center py-3 px-6 text-sm font-semibold rounded-lg transition-all duration-300 cursor-pointer min-h-[44px] flex items-center justify-center ${
                     plan.is_popular
                       ? "bg-gradient-to-r from-accent to-accent-blue text-white hover:opacity-90 hover:shadow-lg hover:shadow-accent/25"
                       : "border border-zinc-700 text-text hover:border-accent/50 hover:bg-accent/5"
                   }`}
                 >
-                  Reserver un appel
+                  {index === 0 ? "Demander un devis" : index === 1 ? "Reserver mon Pack Conversion" : "Discuter de mon abonnement"}
                 </a>
               </SpotlightCard>
             </motion.div>

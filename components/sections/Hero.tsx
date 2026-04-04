@@ -1,6 +1,7 @@
 "use client"
 
 import { motion, useReducedMotion } from "framer-motion"
+import { Star } from "lucide-react"
 import { AnimatedPaths } from "@/components/ui/AnimatedPaths"
 import { ContainerScroll } from "@/components/ui/ContainerScroll"
 import type { HeroContent } from "@/lib/types"
@@ -12,12 +13,12 @@ interface HeroProps {
 export function Hero({ data }: HeroProps) {
   const shouldReduce = useReducedMotion()
 
-  const titleWords = (data.title || "Une landing page. Une idee. Des conversions.").split(" ")
+  const titleWords = (data.title || "Multipliez vos conversions B2B par 3 en 30 jours").split(" ")
 
-  const gradientWords = ["conversions.", "conversions", "idee.", "idee"]
+  const gradientWords = ["conversions", "b2b", "3", "jours"]
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-bg" aria-label="Accueil">
+    <section id="hero" className="relative min-h-screen overflow-hidden bg-bg" aria-label="Accueil">
       {/* Animated Background Paths */}
       <AnimatedPaths />
 
@@ -27,14 +28,15 @@ export function Hero({ data }: HeroProps) {
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40">
         <div className="text-center max-w-4xl mx-auto">
-          {/* Badge */}
+          {/* Badge — scarcity + urgency */}
           <motion.div
             initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="inline-block px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-accent border border-accent/30 rounded-full bg-accent/5">
-              Agence landing pages B2B
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-green-400 border border-green-400/30 rounded-full bg-green-400/5">
+              <span className="pulsing-dot" />
+              3 places disponibles ce mois-ci
             </span>
           </motion.div>
 
@@ -74,7 +76,7 @@ export function Hero({ data }: HeroProps) {
             transition={{ duration: 0.6, delay: 0.8 }}
           >
             {data.subtitle ||
-              "Nous concevons des landing pages B2B qui transforment votre trafic en clients qualifies. Design strategique, copywriting oriente conversion, developpement sur-mesure."}
+              "Nos landing pages generent en moyenne x3.2 de conversions pour les entreprises B2B. Design strategique, copywriting data-driven, A/B testing inclus."}
           </motion.p>
 
           {/* CTAs */}
@@ -88,15 +90,34 @@ export function Hero({ data }: HeroProps) {
               href="#contact"
               className="group relative px-8 py-3.5 text-sm font-semibold rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 cursor-pointer min-h-[44px] flex items-center"
             >
-              <span className="relative z-10">{data.cta_primary || "Reserver un appel strategique"}</span>
+              <span className="relative z-10">{data.cta_primary || "Obtenir mon audit CRO gratuit"}</span>
               <div className="absolute inset-0 bg-gradient-to-r from-accent-blue to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </a>
             <a
               href="#resultats"
               className="px-8 py-3.5 text-sm font-semibold rounded-lg border border-zinc-700 text-text hover:border-accent/50 hover:bg-accent/5 transition-all duration-300 cursor-pointer min-h-[44px] flex items-center"
             >
-              {data.cta_secondary || "Voir nos resultats"}
+              {data.cta_secondary || "Voir les resultats clients →"}
             </a>
+          </motion.div>
+
+          {/* Micro-proof */}
+          <motion.div
+            className="mt-8 flex flex-col items-center gap-2"
+            initial={{ opacity: 0, y: shouldReduce ? 0 : 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 1.2 }}
+          >
+            <div className="flex items-center gap-1.5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
+              ))}
+              <span className="ml-2 text-sm font-medium text-text">4.9/5</span>
+              <span className="text-sm text-text-muted">— Note par +50 directeurs marketing B2B</span>
+            </div>
+            <p className="text-xs text-text-muted/70">
+              Deja adopte par DataFlow, PaySecure, CloudOps et 200+ entreprises B2B
+            </p>
           </motion.div>
         </div>
 
