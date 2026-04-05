@@ -34,9 +34,7 @@
 }
 
 /* ── Base ──────────────────────────────────────── */
-html {
-  scroll-behavior: smooth;
-}
+/* scroll-behavior handled by Lenis — no CSS smooth scroll to avoid conflicts */
 
 body {
   background-color: var(--bg);
@@ -63,7 +61,8 @@ body {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(139,92,246,0.3), rgba(59,130,246,0.3), transparent);
   margin: 0 auto;
-  width: 80%;
+  width: 60%;
+  opacity: 0.6;
 }
 
 /* ── Magnetic hover effect for buttons ────────── */

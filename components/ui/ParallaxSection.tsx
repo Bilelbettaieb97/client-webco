@@ -16,13 +16,14 @@ export function ParallaxSection({ children, speed = 0.3, className }: ParallaxSe
     offset: ["start end", "end start"]
   })
   const y = useTransform(scrollYProgress, [0, 1], [speed * 100, speed * -100])
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.7, 1, 1, 0.7])
 
   if (shouldReduce) {
     return <div ref={ref} className={className}>{children}</div>
   }
 
   return (
-    <motion.div ref={ref} style={{ y }} className={className}>
+    <motion.div ref={ref} style={{ y, opacity }} className={className}>
       {children}
     </motion.div>
   )
