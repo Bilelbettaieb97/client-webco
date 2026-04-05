@@ -1,84 +1,48 @@
 "use client"
 
 import { motion, useReducedMotion } from "framer-motion"
-import { AnimatedCounter } from "@/components/ui/AnimatedCounter"
 
-const clients = [
-  "DataFlow",
-  "PaySecure",
-  "TalentHub",
-  "CloudOps",
-  "LegalTech Pro",
-  "GreenSupply",
-]
-
-const stats = [
-  { value: 3.2, suffix: "x", label: "Conversion moyenne" },
-  { value: 200, suffix: "+", label: "Pages livrées" },
-  { value: 48, suffix: "h", label: "Premier draft" },
-  { value: 97, suffix: "%", label: "Renouvellement" },
-]
+const clients = ["DataFlow", "PaySecure", "TalentHub", "CloudOps", "LegalTech Pro", "GreenSupply"]
 
 export function LogoBar() {
   const shouldReduce = useReducedMotion()
 
   return (
-    <section className="relative py-16 sm:py-20 bg-bg border-y border-zinc-800/50" aria-label="Clients et statistiques">
-      {/* Animated gradient line at top */}
-      <div className="absolute top-0 left-0 right-0 animated-gradient-line" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Title */}
-        <motion.p
-          className="text-center text-sm text-text-muted uppercase tracking-widest mb-10"
-          initial={{ opacity: 0 }}
+    <section className="relative py-12 bg-bg" aria-label="Clients">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Client names — monospace, gray, understated */}
+        <motion.div
+          className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3"
+          initial={shouldReduce ? {} : { opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          Ils ont multiplié leurs conversions avec nous
-        </motion.p>
-
-        {/* Client logos (badge-style) */}
-        <motion.div
-          className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mb-14"
-          initial={{ opacity: 0, y: shouldReduce ? 0 : 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
           {clients.map((name) => (
             <span
               key={name}
-              className="px-5 py-2.5 text-sm sm:text-base font-display font-semibold text-zinc-400 border border-zinc-800 rounded-lg bg-zinc-900/50 hover:border-zinc-600 hover:text-zinc-300 transition-all duration-300 min-w-[100px] text-center"
+              className="text-sm font-mono text-zinc-500 tracking-wide"
             >
               {name}
             </span>
           ))}
         </motion.div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {stats.map((stat, index) => (
-            <div key={stat.label} className="relative">
-              <AnimatedCounter
-                value={stat.value}
-                suffix={stat.suffix}
-                label={stat.label}
-              />
-              {index === 1 && (
-                <p className="text-center mt-1 flex items-center justify-center gap-1.5 text-xs text-green-400">
-                  <span className="pulsing-dot" />
-                  et ça continue
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
+        {/* Stats line — small, muted */}
+        <motion.p
+          className="mt-6 text-center text-xs sm:text-sm text-text-muted/50 tracking-wide"
+          initial={shouldReduce ? {} : { opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <span className="stat-number">200+</span> landing pages livrees
+          <span className="mx-2 text-zinc-700">&middot;</span>
+          Conversion moyenne <span className="stat-number">x3.2</span>
+          <span className="mx-2 text-zinc-700">&middot;</span>
+          Reponse en 24h
+        </motion.p>
       </div>
-
-      {/* Animated gradient line at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 animated-gradient-line" />
     </section>
   )
 }

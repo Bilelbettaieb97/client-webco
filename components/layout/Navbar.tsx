@@ -3,13 +3,11 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion"
 import { Menu, X } from "lucide-react"
-import { MagneticButton } from "@/components/ui/MagneticButton"
 
 const navLinks = [
-  { href: "#process", label: "Process" },
-  { href: "#resultats", label: "Résultats" },
-  { href: "#offres", label: "Offres" },
-  { href: "#temoignages", label: "Témoignages" },
+  { href: "#realisations", label: "Travaux" },
+  { href: "#tarifs", label: "Tarifs" },
+  { href: "#contact", label: "Contact" },
 ]
 
 export function Navbar() {
@@ -55,7 +53,7 @@ export function Navbar() {
             <a
               href="#"
               className="text-xl sm:text-2xl font-display font-bold text-gradient"
-              aria-label="Webco - Retour à l'accueil"
+              aria-label="Webco - Retour a l'accueil"
             >
               Webco
             </a>
@@ -72,13 +70,12 @@ export function Navbar() {
                   <span className="absolute -bottom-1 left-0 h-px w-0 bg-gradient-to-r from-accent to-accent-blue group-hover/link:w-full transition-all duration-300" />
                 </a>
               ))}
-              <MagneticButton
+              <a
                 href="#contact"
-                className="px-5 py-2.5 text-sm font-medium rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white hover:opacity-90 transition-opacity cursor-pointer min-h-[44px] flex items-center gap-2"
+                className="px-5 py-2.5 text-sm font-medium rounded-lg border border-zinc-700 text-text hover:border-accent/50 hover:bg-accent/5 transition-all duration-300 cursor-pointer min-h-[44px] flex items-center"
               >
-                <span className="pulsing-dot" />
-                Audit gratuit
-              </MagneticButton>
+                Nous contacter
+              </a>
             </div>
 
             {/* Mobile Toggle */}
@@ -131,11 +128,10 @@ export function Navbar() {
                 onClick={() => setIsOpen(false)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 }}
-                className="mt-4 px-8 py-3 text-lg font-medium rounded-lg bg-gradient-to-r from-accent to-accent-blue text-white flex items-center gap-2"
+                transition={{ delay: 0.3 }}
+                className="mt-4 px-8 py-3 text-lg font-medium rounded-lg border border-zinc-700 text-text"
               >
-                <span className="pulsing-dot" />
-                Audit gratuit
+                Nous contacter
               </motion.a>
             </div>
           </motion.div>

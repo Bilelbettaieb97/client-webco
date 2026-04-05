@@ -402,6 +402,14 @@ input[type="range"]::-moz-range-thumb {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Text Huge — signature typography ────────────── */
+.text-huge {
+  font-size: clamp(3rem, 8vw, 8rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
 /* ── Reduced motion ────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto !important; }
